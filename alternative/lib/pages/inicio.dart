@@ -16,6 +16,8 @@ class _InicioPageState extends State<InicioPage> {
 
   @override
   Widget build(BuildContext context) {
+    _controllerPesquisa.text = "";
+
     return Scaffold(
 //      floatingActionButton: ,
       appBar: _buildBar(context),

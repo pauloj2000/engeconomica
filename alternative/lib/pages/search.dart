@@ -69,7 +69,11 @@ class _SearchPageState extends State<SearchPage> {
         decoration: new InputDecoration(
             labelText: 'Buscar',
             suffixIcon: GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  setState(() {
+                    build(context);
+                  });
+                },
                 child: Icon(
                   Icons.search,
                   color: Colors.blueAccent,
@@ -78,11 +82,13 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  Widget _getCards(String tituloCard)
-  {
+  Widget _getCards(String tituloCard) {
     List<Widget> list = new List<Widget>();
-    for(var i = 1; i < 4; i++){
-      list.add(new CardItens(tituloCard + " " + i.toString()));
+    for (var i = 1; i < 4; i++) {
+      list.add(new Padding(
+          padding: EdgeInsets.only(bottom: 25),
+          child: CardItens(tituloCard +
+              (i == 1 ? "" : i == 2 ? " (Semi-novo)" : " (Usado)"))));
     }
     return new Column(children: list);
   }
