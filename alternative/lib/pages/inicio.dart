@@ -1,5 +1,6 @@
 import 'package:alternative/infra/cores.dart';
-import 'package:alternative/infra/geral.dart';
+import 'package:alternative/components/geral.dart';
+import 'package:alternative/pages/search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -16,6 +17,7 @@ class _InicioPageState extends State<InicioPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+//      floatingActionButton: ,
       appBar: _buildBar(context),
       body: ModalProgressHUD(
         inAsyncCall: _loading,
@@ -60,7 +62,10 @@ class _InicioPageState extends State<InicioPage> {
             labelText: 'Buscar',
             suffixIcon: GestureDetector(
                 onTap: () {
-                  print("Go to search page");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SearchPage(_controllerPesquisa.text)),
+                  );
                 },
                 child: Icon(
                   Icons.search,
@@ -78,15 +83,25 @@ class _InicioPageState extends State<InicioPage> {
         right: MediaQuery.of(context).size.width * 0.1,
       ),
       child: new RaisedButton(
+        shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(10),
+            side: BorderSide(color: Cores.roxo)),
         onPressed: () {},
+        color: Cores.cinzaClaro,
         child: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            new Text('Lojas favoritas', style: TextStyle(
+            new Text(
+              'Lojas favoritas',
+              style: TextStyle(
+                color: Cores.roxo,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            new Icon(
+              Icons.favorite_border,
               color: Cores.roxo,
-              fontWeight: FontWeight.bold,
-            ),),
-            new Icon(Icons.favorite_border, color: Cores.roxo,),
+            ),
           ],
         ),
       ),
@@ -100,15 +115,25 @@ class _InicioPageState extends State<InicioPage> {
         right: MediaQuery.of(context).size.width * 0.1,
       ),
       child: new RaisedButton(
+        shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(10),
+            side: BorderSide(color: Cores.roxo)),
         onPressed: () {},
+        color: Cores.cinzaClaro,
         child: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            new Text('Meus anúncios', style: TextStyle(
+            new Text(
+              'Meus anúncios',
+              style: TextStyle(
+                color: Cores.roxo,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            new Icon(
+              Icons.person_pin,
               color: Cores.roxo,
-              fontWeight: FontWeight.bold,
-            ),),
-            new Icon(Icons.person_pin, color: Cores.roxo,),
+            ),
           ],
         ),
       ),
@@ -122,15 +147,25 @@ class _InicioPageState extends State<InicioPage> {
         right: MediaQuery.of(context).size.width * 0.1,
       ),
       child: new RaisedButton(
+        shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(10),
+            side: BorderSide(color: Cores.roxo)),
         onPressed: () {},
+        color: Cores.cinzaClaro,
         child: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            new Text('Histórico de compras', style: TextStyle(
+            new Text(
+              'Histórico de compras',
+              style: TextStyle(
+                color: Cores.roxo,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            new Icon(
+              Icons.history,
               color: Cores.roxo,
-              fontWeight: FontWeight.bold,
-            ),),
-            new Icon(Icons.history, color: Cores.roxo,),
+            ),
           ],
         ),
       ),

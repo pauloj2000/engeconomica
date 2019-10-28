@@ -1,5 +1,5 @@
 import 'package:alternative/infra/cores.dart';
-import 'package:alternative/infra/geral.dart';
+import 'package:alternative/components/geral.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
