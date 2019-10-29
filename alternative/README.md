@@ -1,6 +1,6 @@
 # alternative
 
-Uma plataforma de vendas de artesanatos em Flutter
+Uma plataforma para comercializar artesanatos desenvolvida em Flutter
 
 ## Getting Started
 
