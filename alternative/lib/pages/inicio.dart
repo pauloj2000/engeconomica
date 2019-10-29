@@ -1,6 +1,9 @@
 import 'package:alternative/infra/cores.dart';
 import 'package:alternative/components/geral.dart';
-import 'package:alternative/pages/search.dart';
+import 'package:alternative/pages/favoritos.dart';
+import 'package:alternative/pages/historico.dart';
+import 'package:alternative/pages/novo_anuncio.dart';
+import 'package:alternative/pages/pesquisa.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -19,7 +22,17 @@ class _InicioPageState extends State<InicioPage> {
     _controllerPesquisa.text = "";
 
     return Scaffold(
-//      floatingActionButton: ,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add, size: MediaQuery.of(context).size.width * 0.1,),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => NovoAnuncioPage()),
+          );
+        },
+        backgroundColor: Colors.purple.withOpacity(0.8),
+        foregroundColor: Cores.cinzaClaro,
+      ),
       appBar: _buildBar(context),
       body: ModalProgressHUD(
         inAsyncCall: _loading,
@@ -66,7 +79,7 @@ class _InicioPageState extends State<InicioPage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SearchPage(_controllerPesquisa.text)),
+                    MaterialPageRoute(builder: (context) => PesquisaPage(_controllerPesquisa.text)),
                   );
                 },
                 child: Icon(
@@ -88,7 +101,12 @@ class _InicioPageState extends State<InicioPage> {
         shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(10),
             side: BorderSide(color: Cores.roxo)),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FavoritosPage()),
+          );
+        },
         color: Cores.cinzaClaro,
         child: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -120,7 +138,12 @@ class _InicioPageState extends State<InicioPage> {
         shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(10),
             side: BorderSide(color: Cores.roxo)),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PesquisaPage("Colar de madeira")),
+          );
+        },
         color: Cores.cinzaClaro,
         child: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -152,7 +175,12 @@ class _InicioPageState extends State<InicioPage> {
         shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(10),
             side: BorderSide(color: Cores.roxo)),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HistoricoPage()),
+          );
+        },
         color: Cores.cinzaClaro,
         child: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

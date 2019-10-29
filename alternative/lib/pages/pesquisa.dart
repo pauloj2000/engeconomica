@@ -4,22 +4,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-class SearchPage extends StatefulWidget {
+class PesquisaPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new _SearchPageState(_textoBusca);
+  State<StatefulWidget> createState() => new _PesquisaPageState(_textoBusca);
 
   String _textoBusca;
 
-  SearchPage(this._textoBusca);
+  PesquisaPage(this._textoBusca);
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _PesquisaPageState extends State<PesquisaPage> {
   final TextEditingController _controllerPesquisa = new TextEditingController();
   bool _loading = false;
 
   String _textoBusca = "";
 
-  _SearchPageState(this._textoBusca);
+  _PesquisaPageState(this._textoBusca);
 
   @override
   Widget build(BuildContext context) {
