@@ -33,7 +33,7 @@ class _NovoAnuncioPageState extends State<NovoAnuncioPage> {
         title: Text("Determine o preço"),
         content: Container(
           child: TextField(
-            controller: _nomeProduto,
+            controller: _precoProduto,
             decoration: new InputDecoration(labelText: 'Preço em reais'),
           ),
         ),
@@ -42,7 +42,7 @@ class _NovoAnuncioPageState extends State<NovoAnuncioPage> {
         title: Text("Descreva o produto"),
         content: Container(
           child: TextField(
-            controller: _nomeProduto,
+            controller: _descricaoProduto,
             decoration: new InputDecoration(labelText: 'Descrição do produto'),
           ),
         ),

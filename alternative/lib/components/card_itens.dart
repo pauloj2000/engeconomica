@@ -1,6 +1,7 @@
 import 'package:alternative/infra/cores.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 
 // ignore: must_be_immutable
 class CardItens extends StatelessWidget {
@@ -143,18 +144,28 @@ class CardItens extends StatelessWidget {
                 "Comprar",
                 style: TextStyle(color: Colors.black54),
               ),
-              Image.asset(
-                "assets/images/carrinho_compra.png",
-                height: MediaQuery.of(context).size.height * 0.06,
+              GestureDetector(
+                onTap: () {
+                  Toast.show("Item adicionado ao carrinho!", context);
+                },
+                child: Image.asset(
+                  "assets/images/carrinho_compra.png",
+                  height: MediaQuery.of(context).size.height * 0.06,
+                ),
               ),
               Text(
                 "Favoritar",
                 style: TextStyle(color: Colors.black54),
               ),
-              IconButton(
-                icon: Icon(
-                  Icons.favorite,
-                  color: Colors.purple,
+              GestureDetector(
+                onTap: () {
+                  Toast.show("Loja adicionada aos favoritos!", context);
+                },
+                child: IconButton(
+                  icon: Icon(
+                    Icons.favorite,
+                    color: Colors.purple,
+                  ),
                 ),
               )
             ],

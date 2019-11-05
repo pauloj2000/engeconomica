@@ -1,8 +1,8 @@
 import 'package:alternative/infra/cores.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 
-// ignore: must_be_immutable
 class CardHistorico extends StatelessWidget {
   String _tituloCard;
 
@@ -73,26 +73,80 @@ class CardHistorico extends StatelessWidget {
                 "Ver detalhes",
                 style: TextStyle(color: Colors.black54),
               ),
-              IconButton(
-                icon: Icon(
-                  Icons.info,
-                  color: Colors.purple,
+              GestureDetector(
+                onTap: () {
+                  _mostreDetalhamento(context);
+                },
+                child: IconButton(
+                  icon: Icon(
+                    Icons.info,
+                    color: Colors.purple,
+                  ),
                 ),
               ),
               Text(
                 "Reclamações",
                 style: TextStyle(color: Colors.black54),
               ),
-              IconButton(
-                icon: Icon(
-                  Icons.mail_outline,
-                  color: Colors.purple,
+              GestureDetector(
+                onTap: () {
+                  _abreReclamacao(context);
+                },
+                child: IconButton(
+                  icon: Icon(
+                    Icons.mail_outline,
+                    color: Colors.purple,
+                  ),
                 ),
-              )
+              ),
             ],
           ),
         ]),
       ),
     );
   }
+}
+
+void _mostreDetalhamento(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      // retorna um objeto do tipo Dialog
+      return AlertDialog(
+        title: new Text("Detalhamento do item"),
+        content: new Text(""),
+        actions: <Widget>[
+          // define os botões na base do dialogo
+          new FlatButton(
+            child: new Text("Fechar"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void _abreReclamacao(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      // retorna um objeto do tipo Dialog
+      return AlertDialog(
+        title: new Text("Reclamação"),
+        content: new Text(""),
+        actions: <Widget>[
+          // define os botões na base do dialogo
+          new FlatButton(
+            child: new Text("Fechar"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

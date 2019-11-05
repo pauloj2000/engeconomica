@@ -2,6 +2,7 @@ import 'package:alternative/infra/cores.dart';
 import 'package:alternative/components/geral.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 
 import 'inicio.dart';
 
@@ -180,11 +181,27 @@ class _LoginPageState extends State<LoginPage> {
 
   // These functions can self contain any user auth logic required, they all have access to _email and _password
 
+  bool validaEmail(String _email){
+    if(!_email.contains("@")){
+      return false;
+    }
+
+    if(!_email.contains(".com")){
+      return false;
+    }
+
+    return true;
+  }
+
   void _loginPressed() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => InicioPage()),
-    );
+    if(validaEmail(_email)){
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => InicioPage()),
+      );
+    } else {
+      Toast.show("O e-mail informado é inválido", context);
+    }
   }
 
   void _createAccountPressed() {
