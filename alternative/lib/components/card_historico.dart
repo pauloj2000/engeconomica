@@ -70,7 +70,7 @@ class CardHistorico extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Text(
-                "Ver detalhes",
+                "Detalhamento",
                 style: TextStyle(color: Colors.black54),
               ),
               GestureDetector(
