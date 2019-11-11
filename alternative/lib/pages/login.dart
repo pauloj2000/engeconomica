@@ -1,5 +1,6 @@
 import 'package:alternative/infra/cores.dart';
 import 'package:alternative/components/geral.dart';
+import 'package:alternative/infra/mockDb.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
@@ -15,6 +16,12 @@ class LoginPage extends StatefulWidget {
 enum FormType { login, register }
 
 class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    BancoDadosMock.iniciaMock();
+    super.initState();
+  }
+
   final TextEditingController _emailFilter = new TextEditingController();
   final TextEditingController _passwordFilter = new TextEditingController();
   String _email = "";
