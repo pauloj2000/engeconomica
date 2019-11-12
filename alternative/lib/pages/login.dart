@@ -3,6 +3,7 @@ import 'package:alternative/components/geral.dart';
 import 'package:alternative/infra/mock_db.dart';
 import 'package:alternative/infra/resultado_execucao.dart';
 import 'package:alternative/model/modelo_usuario.dart';
+import 'package:alternative/services/servico_usuario.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
@@ -18,9 +19,13 @@ class LoginPage extends StatefulWidget {
 enum FormType { login, register }
 
 class _LoginPageState extends State<LoginPage> {
+
+  ServicoUsuario servicoUsuario;
+
   @override
   void initState() {
     BancoDadosMock.iniciaMock();
+    servicoUsuario = new ServicoUsuario();
     super.initState();
   }
 
@@ -214,10 +219,11 @@ class _LoginPageState extends State<LoginPage> {
     var resultado = new ResultadoExecucao(true, "");
 
     List<Usuario> listaUsuarios = BancoDadosMock.usuarios;
+    List<Usuario> listaAux = new List<Usuario>();
 
-    listaUsuarios.where((usuario) => usuario.email == _email);
+    listaAux = listaUsuarios.where((usuario) => usuario.email == _email).toList();
 
-    if (listaUsuarios.length == 0) {
+    if (listaAux.length == 0) {
       resultado.setResultado(false);
       resultado
           .adicioneMensagemErro("O email informado ainda não foi cadastrado!");
@@ -233,11 +239,12 @@ class _LoginPageState extends State<LoginPage> {
     var resultado = new ResultadoExecucao(true, "");
 
     List<Usuario> listaUsuarios = BancoDadosMock.usuarios;
+    List<Usuario> listaAux = new List<Usuario>();
 
-    listaUsuarios
-        .where((usuario) => usuario.email == _email && usuario.senha == _senha);
+    listaAux = listaUsuarios
+        .where((usuario) => usuario.email == _email && usuario.senha == _senha).toList();
 
-    if (listaUsuarios.length == 0) {
+    if (listaAux.length == 0) {
       resultado.setResultado(false);
       resultado.adicioneMensagemErro("A senha está incorreta.");
     }
@@ -257,7 +264,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _createAccountPressed() {
-    print('The user wants to create an accoutn with $_email and $_password');
+//    servicoUsuario.adicionaUsuario(_id, _nome, _email, _password, DateTime.now()., new List<Pagamento>())]
+
+    Toast.show("Usuário cadastrado com sucesso!", context,
+        duration: 3, gravity: Toast.CENTER);
   }
 
   void _passwordReset() {
