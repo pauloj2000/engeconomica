@@ -3,6 +3,7 @@ import 'package:alternative/model/modelo_loja.dart';
 import 'package:alternative/model/modelo_usuario.dart';
 
 class BancoDadosMock {
+
   static List<Usuario> usuarios;
   static List<Loja> lojas;
   static List<Item> itens;

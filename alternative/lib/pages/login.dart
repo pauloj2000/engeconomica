@@ -1,6 +1,8 @@
 import 'package:alternative/infra/cores.dart';
 import 'package:alternative/components/geral.dart';
-import 'package:alternative/infra/mockDb.dart';
+import 'package:alternative/infra/mock_db.dart';
+import 'package:alternative/infra/resultado_execucao.dart';
+import 'package:alternative/model/modelo_usuario.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
@@ -66,15 +68,14 @@ class _LoginPageState extends State<LoginPage> {
     return new Scaffold(
       appBar: _buildBar(context),
       body: ListView(
-          children: <Widget>[
-            Geral.buildLogo(context, 0.1, 0.2),
-            _buildTextFields(),
-            _buildButtons(),
-          ],
-        ),
+        children: <Widget>[
+          Geral.buildLogo(context, 0.1, 0.2),
+          _buildTextFields(),
+          _buildButtons(),
+        ],
+      ),
     );
   }
-
 
   Widget _buildBar(BuildContext context) {
     return new AppBar(
@@ -188,20 +189,64 @@ class _LoginPageState extends State<LoginPage> {
 
   // These functions can self contain any user auth logic required, they all have access to _email and _password
 
-  bool validaEmail(String _email){
-    if(!_email.contains("@")){
+  bool validaEmail(String _email, String _senha) {
+    if (!_email.contains("@")) {
       return false;
     }
 
-    if(!_email.contains(".com")){
+    if (!_email.contains(".com")) {
+      return false;
+    }
+
+    ResultadoExecucao resultado = validaEntradaUsuario(_email, _senha);
+
+    if (!resultado.sucesso()) {
+      Toast.show(resultado.retornaMensagemErro(), context,
+          duration: 3, gravity: Toast.CENTER);
+
       return false;
     }
 
     return true;
   }
 
+  ResultadoExecucao validaEntradaUsuario(String _email, String _senha) {
+    var resultado = new ResultadoExecucao(true, "");
+
+    List<Usuario> listaUsuarios = BancoDadosMock.usuarios;
+
+    listaUsuarios.where((usuario) => usuario.email == _email);
+
+    if (listaUsuarios.length == 0) {
+      resultado.setResultado(false);
+      resultado
+          .adicioneMensagemErro("O email informado ainda não foi cadastrado!");
+      return resultado;
+    }
+
+    resultado = verificaLoginESenha(_email, _senha);
+
+    return resultado;
+  }
+
+  ResultadoExecucao verificaLoginESenha(String _email, String _senha) {
+    var resultado = new ResultadoExecucao(true, "");
+
+    List<Usuario> listaUsuarios = BancoDadosMock.usuarios;
+
+    listaUsuarios
+        .where((usuario) => usuario.email == _email && usuario.senha == _senha);
+
+    if (listaUsuarios.length == 0) {
+      resultado.setResultado(false);
+      resultado.adicioneMensagemErro("A senha está incorreta.");
+    }
+
+    return resultado;
+  }
+
   void _loginPressed() {
-    if(validaEmail(_email)){
+    if (validaEmail(_email, _password)) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => InicioPage()),
