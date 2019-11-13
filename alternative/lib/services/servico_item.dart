@@ -5,14 +5,15 @@ import 'package:alternative/model/modelo_item.dart';
 class ServicoItem {
 
   ResultadoExecucao adicionaItem(int _id, int _idLoja, String _nome,
-      double _preco, String _producaoDesc, List<Imagem> _imagem) {
+      double _preco, String _produtoDesc, String _producaoDesc, List<Imagem> _imagem) {
+
     BancoDadosMock.itens.add(new Item(
         id: _id,
         idLoja: _idLoja,
         nome: _nome,
         preco: _preco,
+        produtoDesc: _produtoDesc,
         producaoDesc: _producaoDesc,
-        produtoDesc: _producaoDesc,
         imagens: _imagem));
 
     return new ResultadoExecucao(true, "");
@@ -34,7 +35,7 @@ class ServicoItem {
   }
 
   ResultadoExecucao alteraItem(int _id, int _idLoja, String _nome,
-      double _preco, String _producaoDesc, List<Imagem> _imagem) {
+      double _preco, String _produtoDesc, String _producaoDesc, List<Imagem> _imagem) {
     var resultado = new ResultadoExecucao(true, "");
 
     if(removeItem(_id).sucesso()){
@@ -43,8 +44,8 @@ class ServicoItem {
           idLoja: _idLoja,
           nome: _nome,
           preco: _preco,
+          produtoDesc: _produtoDesc,
           producaoDesc: _producaoDesc,
-          produtoDesc: _producaoDesc,
           imagens: _imagem));
     } else {
       resultado.setResultado(false);

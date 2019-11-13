@@ -1,3 +1,4 @@
+import 'package:alternative/bloc/bloc_pesquisa.dart';
 import 'package:alternative/infra/cores.dart';
 import 'package:alternative/components/geral.dart';
 import 'package:alternative/pages/favoritos.dart';
@@ -16,6 +17,8 @@ class InicioPage extends StatefulWidget {
 class _InicioPageState extends State<InicioPage> {
   final TextEditingController _controllerPesquisa = new TextEditingController();
   bool _loading = false;
+
+  BlocPesquisa _blocPesquisa = new BlocPesquisa();
 
   @override
   Widget build(BuildContext context) {
@@ -77,9 +80,11 @@ class _InicioPageState extends State<InicioPage> {
             labelText: 'Buscar',
             suffixIcon: GestureDetector(
                 onTap: () {
+                  _blocPesquisa.setTextoPesquisa(_controllerPesquisa.text);
+
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PesquisaPage(_controllerPesquisa.text)),
+                    MaterialPageRoute(builder: (context) => PesquisaPage(_blocPesquisa)),
                   );
                 },
                 child: Icon(
@@ -141,7 +146,7 @@ class _InicioPageState extends State<InicioPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => PesquisaPage("Colar de madeira")),
+            MaterialPageRoute(builder: (context) => PesquisaPage(_blocPesquisa)),
           );
         },
         color: Cores.cinzaClaro,

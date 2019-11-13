@@ -24,10 +24,10 @@ class BancoDadosMock {
 
     Usuario user2 = new Usuario();
     user2.id = 2;
-    user2.nome = "Zé Ricardo Dantas de Sá";
-    user2.dataCriacao = '11/11/2019';
-    user2.email = "josericardo@gmail.com";
-    user2.senha = "123456789";
+    user2.nome = "Paulo Ricardo Dantas Sá";
+    user2.dataCriacao = '12/11/2019';
+    user2.email = "paulo@gmail.com";
+    user2.senha = "123";
 
     usuarios.add(user2);
 
@@ -39,13 +39,23 @@ class BancoDadosMock {
     lojas.add(loja2);
     lojas.add(loja3);
 
-    Item item1 = new Item(id: 1, idLoja: 1, nome: "Cocar Indígena Vermelho Simples");
-    Item item2 = new Item(id: 2, idLoja: 1, nome: "Cocar Indígena Extendido");
-    Item item3 = new Item(id: 3, idLoja: 1, nome: "Lança Tupiniquim");
+    Item item1 = new Item(id: 1, idLoja: 1, nome: "Cocar Indígena Vermelho Simples", preco: 33.213,
+    produtoDesc: "O produto é feito com lorem ipsum", producaoDesc: "A produção é feita de forma única");
 
-    Item item4 = new Item(id: 4, idLoja: 3, nome: "Colar de Madeira");
-    Item item5 = new Item(id: 5, idLoja: 3, nome: "Colar de Pérolas");
-    Item item6 = new Item(id: 6, idLoja: 3, nome: "Chapéu de Palha");
+    Item item2 = new Item(id: 2, idLoja: 1, nome: "Cocar Indígena Extendido", preco: 19000,
+        produtoDesc: "O melhor teste possível", producaoDesc: "A produção é rara");
+
+    Item item3 = new Item(id: 3, idLoja: 1, nome: "Lança Tupiniquim", preco: 33.1,
+        produtoDesc: "Não há produto mais raro", producaoDesc: "A produção é top");
+
+    Item item4 = new Item(id: 4, idLoja: 3, nome: "Colar de Madeira", preco: 33.212313,
+        produtoDesc: "Lorem ipsum", producaoDesc: "A produção é feita de forma única");
+
+    Item item5 = new Item(id: 5, idLoja: 3, nome: "Colar de Pérolas", preco: 213.10,
+        produtoDesc: "Produto de raro efeito", producaoDesc: "A produção é feita de forma única");
+
+    Item item6 = new Item(id: 6, idLoja: 3, nome: "Chapéu de Palha", preco: 313,
+        produtoDesc: "O produto é feito com lorem ipsum", producaoDesc: "A produção é feita de forma única em casa");
 
     itens.add(item1);
     itens.add(item2);

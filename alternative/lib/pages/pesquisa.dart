@@ -1,32 +1,31 @@
+import 'package:alternative/bloc/bloc_pesquisa.dart';
 import 'package:alternative/components/card_itens.dart';
 import 'package:alternative/infra/cores.dart';
+import 'package:alternative/infra/mock_db.dart';
+import 'package:alternative/model/modelo_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class PesquisaPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new _PesquisaPageState(_textoBusca);
+  State<StatefulWidget> createState() => new _PesquisaPageState(_blocPesquisa);
 
-  String _textoBusca;
+  BlocPesquisa _blocPesquisa;
 
-  PesquisaPage(this._textoBusca);
+  PesquisaPage(this._blocPesquisa);
 }
 
 class _PesquisaPageState extends State<PesquisaPage> {
   final TextEditingController _controllerPesquisa = new TextEditingController();
   bool _loading = false;
 
-  String _textoBusca = "";
+  BlocPesquisa _blocPesquisa;
 
-  _PesquisaPageState(this._textoBusca);
+  _PesquisaPageState(this._blocPesquisa);
 
   @override
   Widget build(BuildContext context) {
-    if (_textoBusca != null && _textoBusca.isNotEmpty) {
-      _controllerPesquisa.text = _textoBusca;
-      _textoBusca = "";
-    }
 
     return Scaffold(
       appBar: _buildBar(context),
@@ -70,6 +69,8 @@ class _PesquisaPageState extends State<PesquisaPage> {
             labelText: 'Buscar',
             suffixIcon: GestureDetector(
                 onTap: () {
+                  _blocPesquisa.setTextoPesquisa(_controllerPesquisa.text);
+
                   setState(() {
                     build(context);
                   });
@@ -84,12 +85,17 @@ class _PesquisaPageState extends State<PesquisaPage> {
 
   Widget _getCards(String tituloCard) {
     List<Widget> list = new List<Widget>();
-    for (var i = 1; i < 4; i++) {
-      list.add(new Padding(
-          padding: EdgeInsets.only(bottom: 25),
-          child: CardItens(tituloCard +
-              (i == 1 ? "" : i == 2 ? " (Semi-novo)" : " (Usado)"))));
-    }
+
+    List<Item> listaItensAux = new List<Item>();
+    List<Item> listaItens = new List<Item>();
+
+    listaItensAux = BancoDadosMock.itens;
+
+    listaItens = listaItensAux.where((item) => item.nome.toLowerCase().contains(_blocPesquisa.getTextoPesquisa().toLowerCase())).toList();
+
+    listaItens.forEach((item) => (list.add(new Padding(
+        padding: EdgeInsets.only(bottom: 25), child: CardItens(item)))));
+
     return new Column(children: list);
   }
 }

@@ -1,13 +1,13 @@
 import 'package:alternative/infra/cores.dart';
+import 'package:alternative/model/modelo_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 
-// ignore: must_be_immutable
 class CardItens extends StatelessWidget {
-  String _tituloCard;
+  Item item;
 
-  CardItens(this._tituloCard);
+  CardItens(this.item);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class CardItens extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  _tituloCard != null ? _tituloCard : "-",
+                  item.nome != null ? item.nome : "-",
                   style: TextStyle(
                       color: Cores.roxo,
                       fontWeight: FontWeight.bold,
@@ -35,7 +35,7 @@ class CardItens extends StatelessWidget {
                     right: MediaQuery.of(context).size.width * 0.02,
                   ),
                   child: Text(
-                    "#1214",
+                    item.id != null ? "#" + item.id.toString() : "-",
                     style: TextStyle(
                       color: Colors.black54,
                       fontSize: 12,
@@ -72,7 +72,7 @@ class CardItens extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "R\$ 17",
+                  item.preco != null ? "R\$ " + item.preco.toStringAsFixed(2).toString().replaceAll(".", ",") : "-",
                   style: TextStyle(
                     color: Cores.roxo,
                     fontWeight: FontWeight.bold,
@@ -107,7 +107,7 @@ class CardItens extends StatelessWidget {
                 right: MediaQuery.of(context).size.width * 0.02,
               ),
               child: Text(
-                "A descrição do produto tem como objetivo explicitar pontos importantes para o cliente.",
+                item.producaoDesc != null && item.producaoDesc != "" ? item.producaoDesc : "-",
                 style: TextStyle(
                   color: Colors.black54,
                   fontSize: 12,
@@ -123,14 +123,14 @@ class CardItens extends StatelessWidget {
               bottom: MediaQuery.of(context).size.height * 0.03,
             ),
             child: Image.asset(
-              "assets/images/colar_madeira.png",
-              height: MediaQuery.of(context).size.height * 0.2,
+              "assets/images/imagem_indisponivel.png",
+              height: MediaQuery.of(context).size.height * 0.35,
+              width: MediaQuery.of(context).size.width * 0.5,
             ),
           ),
           Padding(
             padding: EdgeInsets.only(
               top: MediaQuery.of(context).size.height * 0.015,
-//              bottom: MediaQuery.of(context).size.height * 0.005,
             ),
             child: Container(
               height: 2,

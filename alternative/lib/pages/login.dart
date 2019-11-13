@@ -2,6 +2,7 @@ import 'package:alternative/infra/cores.dart';
 import 'package:alternative/components/geral.dart';
 import 'package:alternative/infra/mock_db.dart';
 import 'package:alternative/infra/resultado_execucao.dart';
+import 'package:alternative/infra/util.dart';
 import 'package:alternative/model/modelo_usuario.dart';
 import 'package:alternative/services/servico_usuario.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,14 +32,19 @@ class _LoginPageState extends State<LoginPage> {
 
   final TextEditingController _emailFilter = new TextEditingController();
   final TextEditingController _passwordFilter = new TextEditingController();
+  final TextEditingController _nomeFilter = new TextEditingController();
+
   String _email = "";
   String _password = "";
+  String _nome = "";
+
   FormType _form = FormType
       .login; // our default setting is to login, and we should switch to creating an account when the user chooses to
 
   _LoginPageState() {
     _emailFilter.addListener(_emailListen);
     _passwordFilter.addListener(_passwordListen);
+    _nomeFilter.addListener(_nomeListen);
   }
 
   void _emailListen() {
@@ -54,6 +60,14 @@ class _LoginPageState extends State<LoginPage> {
       _password = "";
     } else {
       _password = _passwordFilter.text;
+    }
+  }
+
+  void _nomeListen(){
+    if (_nomeFilter.text.isEmpty) {
+      _nome = "";
+    } else {
+      _nome = _nomeFilter.text;
     }
   }
 
@@ -112,10 +126,16 @@ class _LoginPageState extends State<LoginPage> {
           new Container(
             child: new TextField(
               controller: _passwordFilter,
-              decoration: new InputDecoration(labelText: 'Password'),
+              decoration: new InputDecoration(labelText: 'Senha'),
               obscureText: true,
             ),
-          )
+          ),
+          _form == FormType.register ? Container(
+            child: new TextField(
+              controller: _nomeFilter,
+              decoration: new InputDecoration(labelText: 'Nome'),
+            ),
+          ) : Container(),
         ],
       ),
     );
@@ -194,25 +214,18 @@ class _LoginPageState extends State<LoginPage> {
 
   // These functions can self contain any user auth logic required, they all have access to _email and _password
 
-  bool validaEmail(String _email, String _senha) {
-    if (!_email.contains("@")) {
-      return false;
+  ResultadoExecucao validaEmail(String _email, String _senha) {
+    var resultado = new ResultadoExecucao(true, "");
+
+    if (!_email.contains("@") || !_email.contains(".com")) {
+      resultado.setResultado(false);
+      resultado.adicioneMensagemErro("E-mail inválido!");
+      return resultado;
     }
 
-    if (!_email.contains(".com")) {
-      return false;
-    }
+    resultado = validaEntradaUsuario(_email, _senha);
 
-    ResultadoExecucao resultado = validaEntradaUsuario(_email, _senha);
-
-    if (!resultado.sucesso()) {
-      Toast.show(resultado.retornaMensagemErro(), context,
-          duration: 3, gravity: Toast.CENTER);
-
-      return false;
-    }
-
-    return true;
+    return resultado;
   }
 
   ResultadoExecucao validaEntradaUsuario(String _email, String _senha) {
@@ -253,18 +266,22 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _loginPressed() {
-    if (validaEmail(_email, _password)) {
+    var resultado = validaEmail(_email, _password);
+
+    if (resultado.sucesso()) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => InicioPage()),
       );
     } else {
-      Toast.show("O e-mail informado é inválido", context);
+      Toast.show(resultado.retornaMensagemErro(), context, gravity: Toast.CENTER, duration: 3);
     }
   }
 
   void _createAccountPressed() {
-//    servicoUsuario.adicionaUsuario(_id, _nome, _email, _password, DateTime.now()., new List<Pagamento>())]
+    servicoUsuario.adicionaUsuario(BancoDadosMock.usuarios.last.id + 1, _nome, _email, _password, Util.retornaDataFormatada(DateTime.now()), new List<Pagamento>());
+
+    _formChange();
 
     Toast.show("Usuário cadastrado com sucesso!", context,
         duration: 3, gravity: Toast.CENTER);
