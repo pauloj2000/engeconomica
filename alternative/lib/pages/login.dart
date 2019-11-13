@@ -5,6 +5,7 @@ import 'package:alternative/infra/resultado_execucao.dart';
 import 'package:alternative/infra/util.dart';
 import 'package:alternative/model/modelo_usuario.dart';
 import 'package:alternative/services/servico_usuario.dart';
+import 'package:alternative/singleton/singleton_usuario.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
@@ -241,6 +242,8 @@ class _LoginPageState extends State<LoginPage> {
       resultado
           .adicioneMensagemErro("O email informado ainda não foi cadastrado!");
       return resultado;
+    } else {
+      SingletonUsuario.instance.usuarioLogado = listaAux.first;
     }
 
     resultado = verificaLoginESenha(_email, _senha);
@@ -269,6 +272,11 @@ class _LoginPageState extends State<LoginPage> {
     var resultado = validaEmail(_email, _password);
 
     if (resultado.sucesso()) {
+
+      if(SingletonUsuario.instance.usuarioLogado == null){
+        SingletonUsuario.instance.usuarioLogado = BancoDadosMock.usuarios.where((user) => user.email == _email).toList().first;
+      }
+
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => InicioPage()),
@@ -279,7 +287,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _createAccountPressed() {
-    servicoUsuario.adicionaUsuario(BancoDadosMock.usuarios.last.id + 1, _nome, _email, _password, Util.retornaDataFormatada(DateTime.now()), new List<Pagamento>());
+    servicoUsuario.adicionaUsuario(BancoDadosMock.usuarios.last.id + 1, _nome, _email, _password, Util.retornaDataFormatada(DateTime.now()), new List<Pagamento>(), 0);
 
     _formChange();
 

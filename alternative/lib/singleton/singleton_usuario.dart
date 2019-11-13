@@ -1,3 +1,5 @@
+import 'package:alternative/model/modelo_usuario.dart';
+
 class SingletonUsuario {
 
   SingletonUsuario._();
@@ -6,5 +8,6 @@ class SingletonUsuario {
 
   static SingletonUsuario get instance => _instance;
 
+  Usuario usuarioLogado;
 
 }

@@ -4,7 +4,7 @@ import 'package:alternative/model/modelo_usuario.dart';
 
 class ServicoUsuario {
   ResultadoExecucao adicionaUsuario(int _id, String _nome, String _email,
-      String _senha, String _dataCriacao, List<Pagamento> _pagamentos) {
+      String _senha, String _dataCriacao, List<Pagamento> _pagamentos, int idLoja) {
 
     BancoDadosMock.usuarios.add(new Usuario(
         id: _id,
@@ -12,7 +12,8 @@ class ServicoUsuario {
         email: _email,
         senha: _senha,
         dataCriacao: _dataCriacao,
-        pagamentos: _pagamentos));
+        pagamentos: _pagamentos,
+        idLoja: idLoja));
 
     return new ResultadoExecucao(true, "");
   }
@@ -33,7 +34,7 @@ class ServicoUsuario {
   }
 
   ResultadoExecucao alteraUsuario(int _id, String _nome, String _email,
-      String _senha, String _dataCriacao, List<Pagamento> _pagamentos) {
+      String _senha, String _dataCriacao, List<Pagamento> _pagamentos, int idLoja) {
 
     var resultado = new ResultadoExecucao(true, "");
 
@@ -44,7 +45,8 @@ class ServicoUsuario {
           email: _email,
           senha: _senha,
           dataCriacao: _dataCriacao,
-          pagamentos: _pagamentos));
+          pagamentos: _pagamentos,
+          idLoja: idLoja));
     } else {
       resultado.setResultado(false);
       resultado.adicioneMensagemErro("Não foi possível alterar.");

@@ -11,6 +11,7 @@ class Usuario {
   String senha;
   String dataCriacao;
   List<Pagamento> pagamentos;
+  int idLoja;
 
   Usuario({
     this.id,
@@ -19,6 +20,7 @@ class Usuario {
     this.senha,
     this.dataCriacao,
     this.pagamentos,
+    this.idLoja
   });
 
   factory Usuario.fromJson(Map<String, dynamic> json) => Usuario(
@@ -28,6 +30,7 @@ class Usuario {
     senha: json["senha"],
     dataCriacao: json["dataCriacao"],
     pagamentos: List<Pagamento>.from(json["pagamentos"].map((x) => Pagamento.fromJson(x))),
+    idLoja: json["idLoja"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -37,6 +40,7 @@ class Usuario {
     "senha": senha,
     "dataCriacao": dataCriacao,
     "pagamentos": List<dynamic>.from(pagamentos.map((x) => x.toJson())),
+    "idLoja": idLoja,
   };
 }
 
