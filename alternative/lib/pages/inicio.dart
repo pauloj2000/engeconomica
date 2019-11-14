@@ -96,6 +96,7 @@ class _InicioPageState extends State<InicioPage> {
             suffixIcon: GestureDetector(
                 onTap: () {
                   _blocPesquisa.setTextoPesquisa(_controllerPesquisa.text);
+                  _blocPesquisa.setTipoPesquisa(0);
 
                   Navigator.push(
                     context,
@@ -159,6 +160,8 @@ class _InicioPageState extends State<InicioPage> {
             borderRadius: new BorderRadius.circular(10),
             side: BorderSide(color: Cores.roxo)),
         onPressed: () {
+          _blocPesquisa.setTipoPesquisa(1);
+
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => PesquisaPage(_blocPesquisa)),

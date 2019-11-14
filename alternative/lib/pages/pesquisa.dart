@@ -3,6 +3,8 @@ import 'package:alternative/components/card_itens.dart';
 import 'package:alternative/infra/cores.dart';
 import 'package:alternative/infra/mock_db.dart';
 import 'package:alternative/model/modelo_item.dart';
+import 'package:alternative/services/servico_loja.dart';
+import 'package:alternative/singleton/singleton_usuario.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -21,6 +23,12 @@ class _PesquisaPageState extends State<PesquisaPage> {
   bool _loading = false;
 
   BlocPesquisa _blocPesquisa;
+
+  @override
+  void initState() {
+    super.initState();
+    reassemble();
+  }
 
   _PesquisaPageState(this._blocPesquisa);
 
@@ -88,12 +96,25 @@ class _PesquisaPageState extends State<PesquisaPage> {
 
     List<Item> listaItensAux = new List<Item>();
     List<Item> listaItens = new List<Item>();
+    List<Item> listaFiltrada = new List<Item>();
 
     listaItensAux = BancoDadosMock.itens;
 
     listaItens = listaItensAux.where((item) => item.nome.toLowerCase().contains(_blocPesquisa.getTextoPesquisa().toLowerCase())).toList();
 
-    listaItens.forEach((item) => (list.add(new Padding(
+    switch(_blocPesquisa.tipoPesquisa){
+      case 0:
+        listaFiltrada = listaItens;
+        break;
+      case 1:
+        var servicoLoja = new ServicoLoja();
+        listaFiltrada = listaItensAux.where((item) => servicoLoja.encontrePorId(item.idLoja).idUsuario == SingletonUsuario.instance.usuarioLogado.id).toList();
+        break;
+      case 2:
+        break;
+    }
+
+    listaFiltrada.forEach((item) => (list.add(new Padding(
         padding: EdgeInsets.only(bottom: 25), child: CardItens(item)))));
 
     return new Column(children: list);

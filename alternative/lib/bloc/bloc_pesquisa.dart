@@ -5,12 +5,23 @@ class BlocPesquisa extends ChangeNotifier {
 
   List<Widget> listaPesquisados = new List<Widget>();
 
+  int tipoPesquisa = 0;
+
   String getTextoPesquisa(){
     return textoPesquisa;
   }
 
+  int getTipoPesquisa(){
+    return tipoPesquisa;
+  }
+
   List<Widget> getListaPesquisados(){
     return listaPesquisados;
+  }
+
+  setTipoPesquisa(int tipoPesquisa){
+    tipoPesquisa = tipoPesquisa;
+    notifyListeners();
   }
 
   setTextoPesquisa(String _texto){

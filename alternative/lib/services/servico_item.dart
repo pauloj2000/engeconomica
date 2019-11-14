@@ -35,7 +35,7 @@ class ServicoItem {
   }
 
   ResultadoExecucao alteraItem(int _id, int _idLoja, String _nome,
-      double _preco, String _produtoDesc, String _producaoDesc, List<Imagem> _imagem) {
+      double _preco, String _produtoDesc, String _producaoDesc, List<Imagem> _imagem, bool _carrinho) {
     var resultado = new ResultadoExecucao(true, "");
 
     if(removeItem(_id).sucesso()){
@@ -46,7 +46,8 @@ class ServicoItem {
           preco: _preco,
           produtoDesc: _produtoDesc,
           producaoDesc: _producaoDesc,
-          imagens: _imagem));
+          imagens: _imagem,
+          carrinho: _carrinho));
     } else {
       resultado.setResultado(false);
       resultado.adicioneMensagemErro("Não foi possível alterar.");

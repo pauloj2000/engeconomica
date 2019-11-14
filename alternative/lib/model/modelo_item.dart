@@ -12,6 +12,7 @@ class Item {
   String produtoDesc;
   String producaoDesc;
   List<Imagem> imagens;
+  bool carrinho;
 
   Item({
     this.id,
@@ -21,6 +22,7 @@ class Item {
     this.produtoDesc,
     this.producaoDesc,
     this.imagens,
+    this.carrinho,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
@@ -30,6 +32,7 @@ class Item {
     preco: json["preco"].toDouble(),
     produtoDesc: json["produtoDesc"],
     producaoDesc: json["producaoDesc"],
+    carrinho: json["carrinho"],
     imagens: List<Imagem>.from(json["imagens"].map((x) => Imagem.fromJson(x))),
   );
 
@@ -41,6 +44,7 @@ class Item {
     "produtoDesc": produtoDesc,
     "producaoDesc": producaoDesc,
     "imagens": List<dynamic>.from(imagens.map((x) => x.toJson())),
+    "carrinho": carrinho
   };
 }
 

@@ -40,22 +40,22 @@ class BancoDadosMock {
     lojas.add(loja3);
 
     Item item1 = new Item(id: 1, idLoja: 1, nome: "Cocar Indígena Vermelho Simples", preco: 33.213,
-    produtoDesc: "O produto é feito com lorem ipsum", producaoDesc: "A produção é feita de forma única");
+    produtoDesc: "O produto é feito com lorem ipsum", producaoDesc: "A produção é feita de forma única", carrinho: false);
 
     Item item2 = new Item(id: 2, idLoja: 1, nome: "Cocar Indígena Extendido", preco: 19000,
-        produtoDesc: "O melhor teste possível", producaoDesc: "A produção é rara");
+        produtoDesc: "O melhor teste possível", producaoDesc: "A produção é rara", carrinho: false);
 
     Item item3 = new Item(id: 3, idLoja: 1, nome: "Lança Tupiniquim", preco: 33.1,
-        produtoDesc: "Não há produto mais raro", producaoDesc: "A produção é top");
+        produtoDesc: "Não há produto mais raro", producaoDesc: "A produção é top", carrinho: true);
 
     Item item4 = new Item(id: 4, idLoja: 3, nome: "Colar de Madeira", preco: 33.212313,
-        produtoDesc: "Lorem ipsum", producaoDesc: "A produção é feita de forma única");
+        produtoDesc: "Lorem ipsum", producaoDesc: "A produção é feita de forma única", carrinho: false);
 
     Item item5 = new Item(id: 5, idLoja: 3, nome: "Colar de Pérolas", preco: 213.10,
-        produtoDesc: "Produto de raro efeito", producaoDesc: "A produção é feita de forma única");
+        produtoDesc: "Produto de raro efeito", producaoDesc: "A produção é feita de forma única", carrinho: false);
 
     Item item6 = new Item(id: 6, idLoja: 3, nome: "Chapéu de Palha", preco: 313,
-        produtoDesc: "O produto é feito com lorem ipsum", producaoDesc: "A produção é feita de forma única em casa");
+        produtoDesc: "O produto é feito com lorem ipsum", producaoDesc: "A produção é feita de forma única em casa", carrinho: true);
 
     itens.add(item1);
     itens.add(item2);

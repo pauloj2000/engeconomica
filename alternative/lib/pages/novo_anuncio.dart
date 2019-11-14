@@ -106,6 +106,37 @@ class _NovoAnuncioPageState extends State<NovoAnuncioPage> {
           ),
         ),
         isActive: true),
+    Step(
+        title: Text("Cadastre o novo item para anúncio"),
+        content: Container(
+
+          child: RaisedButton(
+            shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(10),
+                side: BorderSide(color: Cores.roxo)),
+            onPressed: () {
+
+            },
+            color: Cores.cinzaClaro,
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                new Text(
+                  'Cadastrar',
+                  style: TextStyle(
+                    color: Colors.purple,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                new Icon(
+                  Icons.add_circle,
+                  color: Colors.purple,
+                ),
+              ],
+            ),
+          ),
+        ),
+        isActive: true),
   ];
 
   @override
@@ -146,37 +177,6 @@ class _NovoAnuncioPageState extends State<NovoAnuncioPage> {
                   });
                   print("onStepContinue : " + current_step.toString());
                 },
-              ),
-              Container(
-                padding: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width * 0.16,
-                  right: MediaQuery.of(context).size.width * 0.062,
-                ),
-                child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(10),
-                      side: BorderSide(color: Cores.roxo)),
-                  onPressed: () {
-                      adicionaNovoItem();
-                  },
-                  color: Cores.cinzaClaro,
-                  child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      new Text(
-                        'Cadastrar',
-                        style: TextStyle(
-                          color: Colors.purple,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      new Icon(
-                        Icons.add_circle,
-                        color: Colors.purple,
-                      ),
-                    ],
-                  ),
-                ),
               ),
             ],
           ),
