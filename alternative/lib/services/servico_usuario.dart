@@ -12,8 +12,7 @@ class ServicoUsuario {
         email: _email,
         senha: _senha,
         dataCriacao: _dataCriacao,
-        pagamentos: _pagamentos,
-        idLoja: idLoja));
+        pagamentos: _pagamentos));
 
     return new ResultadoExecucao(true, "");
   }
@@ -45,8 +44,7 @@ class ServicoUsuario {
           email: _email,
           senha: _senha,
           dataCriacao: _dataCriacao,
-          pagamentos: _pagamentos,
-          idLoja: idLoja));
+          pagamentos: _pagamentos));
     } else {
       resultado.setResultado(false);
       resultado.adicioneMensagemErro("Não foi possível alterar.");

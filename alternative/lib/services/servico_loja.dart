@@ -5,13 +5,16 @@ import 'package:alternative/model/modelo_loja.dart';
 class ServicoLoja {
 
   ResultadoExecucao adicionaLoja(int _id, String _nome, double _caixa,
-      double _valorTotalRecebido, int _avaliacao) {
+      double _valorTotalRecebido, int _avaliacao, int _idUsuario, String _descricao, String _foto) {
     BancoDadosMock.lojas.add(new Loja(
       id: _id,
       nome: _nome,
       caixa: _caixa,
       valorTotalRecebido: _valorTotalRecebido,
       avaliacao: _avaliacao,
+      idUsuario:  _idUsuario,
+      descricao: _descricao,
+      foto: _foto,
     ));
 
     return new ResultadoExecucao(true, "");
@@ -33,7 +36,7 @@ class ServicoLoja {
   }
 
   ResultadoExecucao alteraLoja(int _id, String _nome, double _caixa,
-      double _valorTotalRecebido, int _avaliacao) {
+      double _valorTotalRecebido, int _avaliacao, int _idUsuario, String _descricao, String _foto) {
     removeLoja(_id);
 
     var resultado = new ResultadoExecucao(true, "");
@@ -45,6 +48,9 @@ class ServicoLoja {
         caixa: _caixa,
         valorTotalRecebido: _valorTotalRecebido,
         avaliacao: _avaliacao,
+        idUsuario: _idUsuario,
+        descricao: _descricao,
+        foto: _foto,
       ));
     } else {
       resultado.setResultado(false);

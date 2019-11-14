@@ -32,8 +32,8 @@ class BancoDadosMock {
     usuarios.add(user2);
 
     Loja loja1 = new Loja(id: 1, idUsuario: 1, nome: "Indio Maluco", avaliacao: 5);
-    Loja loja2 = new Loja(id: 2, idUsuario: 1, nome: "Artesãonato", avaliacao: 5);
-    Loja loja3 = new Loja(id: 3, idUsuario: 2, nome: "Miçangas do Zé", avaliacao: 5);
+    Loja loja2 = new Loja(id: 2, idUsuario: 3, nome: "Artesãonato", avaliacao: 5);
+    Loja loja3 = new Loja(id: 3, idUsuario: 4, nome: "Miçangas do Zé", avaliacao: 5);
 
     lojas.add(loja1);
     lojas.add(loja2);

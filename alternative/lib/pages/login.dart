@@ -164,14 +164,14 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             new FlatButton(
-              child: new Text('Dont have an account? Tap here to register.',
+              child: new Text('Não tem uma conta? Clique aqui para cadastrar.',
                   style: TextStyle(
                     color: Colors.blueAccent,
                   )),
               onPressed: _formChange,
             ),
             new FlatButton(
-              child: new Text('Forgot Password?',
+              child: new Text('Esqueceu sua senha?',
                   style: TextStyle(
                     color: Colors.blueAccent,
                   )),
@@ -191,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               child: RaisedButton(
                 child: new Text(
-                  'Create an Account',
+                  'Criar nova conta',
                   style: TextStyle(
                     color: Cores.roxo,
                     fontSize: 15,
@@ -201,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             new FlatButton(
-              child: new Text('Have an account? Click here to login.',
+              child: new Text('Já tem uma conta? Clique para fazer login',
                   style: TextStyle(
                     color: Colors.blueAccent,
                   )),

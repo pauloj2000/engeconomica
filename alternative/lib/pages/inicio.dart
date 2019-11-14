@@ -1,10 +1,14 @@
 import 'package:alternative/bloc/bloc_pesquisa.dart';
 import 'package:alternative/infra/cores.dart';
 import 'package:alternative/components/geral.dart';
+import 'package:alternative/infra/mock_db.dart';
+import 'package:alternative/model/modelo_loja.dart';
 import 'package:alternative/pages/favoritos.dart';
 import 'package:alternative/pages/historico.dart';
+import 'package:alternative/pages/nova_loja.dart';
 import 'package:alternative/pages/novo_anuncio.dart';
 import 'package:alternative/pages/pesquisa.dart';
+import 'package:alternative/singleton/singleton_usuario.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -28,10 +32,21 @@ class _InicioPageState extends State<InicioPage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add, size: MediaQuery.of(context).size.width * 0.1,),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => NovoAnuncioPage()),
-          );
+          var lojaAux = new Loja();
+          lojaAux = BancoDadosMock.lojas.where((loja) => loja.idUsuario == SingletonUsuario.instance.usuarioLogado.id).length != 0 ?
+          BancoDadosMock.lojas.where((loja) => loja.idUsuario == SingletonUsuario.instance.usuarioLogado.id).first : null;
+
+          if(lojaAux != null){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NovoAnuncioPage()),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NovaLojaPage()),
+            );
+          }
         },
         backgroundColor: Colors.purple.withOpacity(0.8),
         foregroundColor: Cores.cinzaClaro,

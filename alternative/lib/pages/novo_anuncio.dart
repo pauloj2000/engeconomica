@@ -158,7 +158,6 @@ class _NovoAnuncioPageState extends State<NovoAnuncioPage> {
                       side: BorderSide(color: Cores.roxo)),
                   onPressed: () {
                       adicionaNovoItem();
-
                   },
                   color: Cores.cinzaClaro,
                   child: new Row(
