@@ -114,6 +114,7 @@ class _NovoAnuncioPageState extends State<NovoAnuncioPage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.done, size: MediaQuery.of(context).size.width * 0.1,),
         onPressed: () {
+          
           adicionaNovoItem();
           Navigator.pop(context);
         },
