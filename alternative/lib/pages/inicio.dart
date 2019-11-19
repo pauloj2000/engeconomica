@@ -3,11 +3,13 @@ import 'package:alternative/infra/cores.dart';
 import 'package:alternative/components/geral.dart';
 import 'package:alternative/infra/mock_db.dart';
 import 'package:alternative/model/modelo_loja.dart';
+import 'package:alternative/pages/carrinho_compras.dart';
 import 'package:alternative/pages/favoritos.dart';
 import 'package:alternative/pages/historico.dart';
 import 'package:alternative/pages/nova_loja.dart';
 import 'package:alternative/pages/novo_anuncio.dart';
 import 'package:alternative/pages/pesquisa.dart';
+import 'package:alternative/services/servico_carrinho_compras.dart';
 import 'package:alternative/singleton/singleton_usuario.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +63,7 @@ class _InicioPageState extends State<InicioPage> {
             _botaoFavoritos(),
             _botaoMeusAnuncios(),
             _botaoHistoricoCompras(),
+            CarrinhoCompras.quantidadeItens() > 0 ? _botaoCarrinhoCompras() : Container(),
           ],
         ),
       ),
@@ -217,6 +220,43 @@ class _InicioPageState extends State<InicioPage> {
             ),
             new Icon(
               Icons.history,
+              color: Cores.roxo,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _botaoCarrinhoCompras() {
+    return new Container(
+      padding: EdgeInsets.only(
+        left: MediaQuery.of(context).size.width * 0.1,
+        right: MediaQuery.of(context).size.width * 0.1,
+      ),
+      child: new RaisedButton(
+        shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(10),
+            side: BorderSide(color: Cores.roxo)),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CarrinhoComprasPage()),
+          );
+        },
+        color: Cores.cinzaClaro,
+        child: new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            new Text(
+              'Meu carrinho',
+              style: TextStyle(
+                color: Cores.roxo,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            new Icon(
+              Icons.add_shopping_cart,
               color: Cores.roxo,
             ),
           ],

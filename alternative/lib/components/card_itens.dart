@@ -158,9 +158,12 @@ class CardItens extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     if (item.carrinho == false) {
+                      CarrinhoCompras.adicionaAoCarrinho(item);
+                      item.carrinho = true;
                       Toast.show("Item adicionado ao carrinho!", context);
                     } else {
                       CarrinhoCompras.removaDoCarrinho(item.id);
+                      item.carrinho = false;
                       Toast.show("Item removido do carrinho!", context);
                     }
                   },

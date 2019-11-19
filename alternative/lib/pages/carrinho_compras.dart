@@ -54,7 +54,13 @@ class _CarrinhoComprasPageState extends State<CarrinhoComprasPage> {
         inAsyncCall: _loading,
         child: ListView(
           children: <Widget>[
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.05,
+            ),
             _getCards(),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.1,
+            ),
           ],
         ),
       ),
@@ -84,7 +90,7 @@ class _CarrinhoComprasPageState extends State<CarrinhoComprasPage> {
 
     listaItens = BancoDadosMock.itens;
 
-    listaAux = listaItens.where((item) => item.carrinho == true);
+    listaAux = listaItens.where((item) => item.carrinho == true).toList();
 
     listaAux.forEach((item) => (list.add(CardItens(item))));
 

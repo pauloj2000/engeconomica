@@ -106,42 +106,20 @@ class _NovoAnuncioPageState extends State<NovoAnuncioPage> {
           ),
         ),
         isActive: true),
-    Step(
-        title: Text("Cadastre o novo item para anúncio"),
-        content: Container(
-
-          child: RaisedButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(10),
-                side: BorderSide(color: Cores.roxo)),
-            onPressed: () {
-
-            },
-            color: Cores.cinzaClaro,
-            child: new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                new Text(
-                  'Cadastrar',
-                  style: TextStyle(
-                    color: Colors.purple,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                new Icon(
-                  Icons.add_circle,
-                  color: Colors.purple,
-                ),
-              ],
-            ),
-          ),
-        ),
-        isActive: true),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.done, size: MediaQuery.of(context).size.width * 0.1,),
+        onPressed: () {
+          adicionaNovoItem();
+          Navigator.pop(context);
+        },
+        backgroundColor: Colors.purple.withOpacity(0.8),
+        foregroundColor: Cores.cinzaClaro,
+      ),
       appBar: _buildBar(context),
       body: ModalProgressHUD(
         inAsyncCall: _loading,
