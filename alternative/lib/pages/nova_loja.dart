@@ -6,6 +6,7 @@ import 'package:alternative/singleton/singleton_usuario.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:toast/toast.dart';
 
 import 'novo_anuncio.dart';
 
@@ -36,6 +37,8 @@ class _NovaLojaPageState extends State<NovaLojaPage> {
     novaLoja.valorTotalRecebido = 0;
     novaLoja.descricao = _descricaoLoja.text;
     novaLoja.foto = "";
+
+    Toast.show("Loja cadastrada com sucesso!", context, gravity: Toast.CENTER);
 
     servicoLoja.adicionaLoja(novaLoja.id, novaLoja.nome, novaLoja.caixa, novaLoja.valorTotalRecebido, novaLoja.avaliacao, novaLoja.idUsuario, novaLoja.descricao, novaLoja.foto);
   }

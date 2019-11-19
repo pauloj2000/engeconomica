@@ -1,10 +1,12 @@
 import 'package:alternative/infra/cores.dart';
 import 'package:alternative/infra/mock_db.dart';
 import 'package:alternative/model/modelo_item.dart';
+import 'package:alternative/pages/inicio.dart';
 import 'package:alternative/services/servico_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:toast/toast.dart';
 
 class NovoAnuncioPage extends StatefulWidget {
   @override
@@ -35,6 +37,8 @@ class _NovoAnuncioPageState extends State<NovoAnuncioPage> {
     novoItem.imagens = null;
 
     servicoItem.adicionaItem(novoItem.id, 1, novoItem.nome, novoItem.preco, novoItem.produtoDesc, novoItem.producaoDesc, novoItem.imagens);
+
+    Toast.show("Item cadastrado com sucesso!", context, gravity: Toast.CENTER);
 
     servicoItem = null;
   }
@@ -114,9 +118,11 @@ class _NovoAnuncioPageState extends State<NovoAnuncioPage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.done, size: MediaQuery.of(context).size.width * 0.1,),
         onPressed: () {
-          
           adicionaNovoItem();
-          Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => InicioPage()),
+          );
         },
         backgroundColor: Colors.purple.withOpacity(0.8),
         foregroundColor: Cores.cinzaClaro,

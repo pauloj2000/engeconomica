@@ -2,9 +2,12 @@ import 'package:alternative/components/card_itens.dart';
 import 'package:alternative/infra/cores.dart';
 import 'package:alternative/infra/mock_db.dart';
 import 'package:alternative/model/modelo_item.dart';
+import 'package:alternative/pages/efetuar_compra.dart';
+import 'package:alternative/services/servico_carrinho_compras.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:toast/toast.dart';
 
 class CarrinhoComprasPage extends StatefulWidget {
   @override
@@ -31,21 +34,33 @@ class _CarrinhoComprasPageState extends State<CarrinhoComprasPage> {
 
           },
           color: Cores.cinzaClaro,
-          child: new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              new Text(
-                'Efetuar pagamento',
-                style: TextStyle(
-                  color: Colors.purple,
-                  fontWeight: FontWeight.bold,
+          child: new GestureDetector(
+            onTap: () {
+              if(CarrinhoCompras.quantidadeItens() > 0){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => EfetuarComprasPage()),
+                );
+              } else {
+               Toast.show("Não há itens no carrinho!", context, gravity: Toast.CENTER);
+              }
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                new Text(
+                  'Efetuar pagamento',
+                  style: TextStyle(
+                    color: Colors.purple,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              new Icon(
-                Icons.monetization_on,
-                color: Colors.purple,
-              ),
-            ],
+                new Icon(
+                  Icons.monetization_on,
+                  color: Colors.purple,
+                ),
+              ],
+            ),
           ),
         ),
       ),
