@@ -5,7 +5,7 @@ import 'package:alternative/model/modelo_item.dart';
 class ServicoItem {
 
   ResultadoExecucao adicionaItem(int _id, int _idLoja, String _nome,
-      double _preco, String _produtoDesc, String _producaoDesc, List<Imagem> _imagem) {
+      double _preco, String _produtoDesc, String _producaoDesc, List<Imagem> _imagem, bool _carrinho) {
 
     BancoDadosMock.itens.add(new Item(
         id: _id,
@@ -14,7 +14,8 @@ class ServicoItem {
         preco: _preco,
         produtoDesc: _produtoDesc,
         producaoDesc: _producaoDesc,
-        imagens: _imagem));
+        imagens: _imagem,
+        carrinho: _carrinho));
 
     return new ResultadoExecucao(true, "");
   }

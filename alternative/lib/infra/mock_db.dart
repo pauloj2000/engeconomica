@@ -46,7 +46,7 @@ class BancoDadosMock {
         produtoDesc: "O melhor teste possível", producaoDesc: "A produção é rara", carrinho: false);
 
     Item item3 = new Item(id: 3, idLoja: 1, nome: "Lança Tupiniquim", preco: 33.1,
-        produtoDesc: "Não há produto mais raro", producaoDesc: "A produção é top", carrinho: true);
+        produtoDesc: "Não há produto mais raro", producaoDesc: "A produção é top", carrinho: false);
 
     Item item4 = new Item(id: 4, idLoja: 3, nome: "Colar de Madeira", preco: 33.212313,
         produtoDesc: "Lorem ipsum", producaoDesc: "A produção é feita de forma única", carrinho: false);
@@ -55,7 +55,7 @@ class BancoDadosMock {
         produtoDesc: "Produto de raro efeito", producaoDesc: "A produção é feita de forma única", carrinho: false);
 
     Item item6 = new Item(id: 6, idLoja: 3, nome: "Chapéu de Palha", preco: 313,
-        produtoDesc: "O produto é feito com lorem ipsum", producaoDesc: "A produção é feita de forma única em casa", carrinho: true);
+        produtoDesc: "O produto é feito com lorem ipsum", producaoDesc: "A produção é feita de forma única em casa", carrinho: false);
 
     itens.add(item1);
     itens.add(item2);

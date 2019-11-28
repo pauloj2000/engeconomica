@@ -36,7 +36,7 @@ class _NovoAnuncioPageState extends State<NovoAnuncioPage> {
     novoItem.producaoDesc = _descricaProducao.text;
     novoItem.imagens = null;
 
-    servicoItem.adicionaItem(novoItem.id, 1, novoItem.nome, novoItem.preco, novoItem.produtoDesc, novoItem.producaoDesc, novoItem.imagens);
+    servicoItem.adicionaItem(novoItem.id, 1, novoItem.nome, novoItem.preco, novoItem.produtoDesc, novoItem.producaoDesc, novoItem.imagens, false);
 
     Toast.show("Item cadastrado com sucesso!", context, gravity: Toast.CENTER);
 
