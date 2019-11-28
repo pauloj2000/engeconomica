@@ -11,6 +11,7 @@ class Usuario {
   String senha;
   String dataCriacao;
   List<Pagamento> pagamentos;
+  List<int> lojasFavoritas;
 
   Usuario({
     this.id,
@@ -44,22 +45,26 @@ class Pagamento {
   int mesAno;
   bool pago;
   double valor;
+  int idItem;
 
   Pagamento({
     this.mesAno,
     this.pago,
     this.valor,
+    this.idItem
   });
 
   factory Pagamento.fromJson(Map<String, dynamic> json) => Pagamento(
     mesAno: json["mesAno"],
     pago: json["pago"],
     valor: json["valor"].toDouble(),
+    idItem: json["idItem"],
   );
 
   Map<String, dynamic> toJson() => {
     "mesAno": mesAno,
     "pago": pago,
     "valor": valor,
+    "idItem": idItem
   };
 }
