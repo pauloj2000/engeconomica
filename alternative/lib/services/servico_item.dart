@@ -5,7 +5,7 @@ import 'package:alternative/model/modelo_item.dart';
 class ServicoItem {
 
   ResultadoExecucao adicionaItem(int _id, int _idLoja, String _nome,
-      double _preco, String _produtoDesc, String _producaoDesc, List<Imagem> _imagem, bool _carrinho) {
+      double _preco, String _produtoDesc, String _producaoDesc, List<Imagem> _imagem) {
 
     BancoDadosMock.itens.add(new Item(
         id: _id,
@@ -14,8 +14,7 @@ class ServicoItem {
         preco: _preco,
         produtoDesc: _produtoDesc,
         producaoDesc: _producaoDesc,
-        imagens: _imagem,
-        carrinho: _carrinho));
+        imagens: _imagem));
 
     return new ResultadoExecucao(true, "");
   }
@@ -36,7 +35,7 @@ class ServicoItem {
   }
 
   ResultadoExecucao alteraItem(int _id, int _idLoja, String _nome,
-      double _preco, String _produtoDesc, String _producaoDesc, List<Imagem> _imagem, bool _carrinho) {
+      double _preco, String _produtoDesc, String _producaoDesc, List<Imagem> _imagem) {
     var resultado = new ResultadoExecucao(true, "");
 
     if(removeItem(_id).sucesso()){
@@ -47,8 +46,7 @@ class ServicoItem {
           preco: _preco,
           produtoDesc: _produtoDesc,
           producaoDesc: _producaoDesc,
-          imagens: _imagem,
-          carrinho: _carrinho));
+          imagens: _imagem,));
     } else {
       resultado.setResultado(false);
       resultado.adicioneMensagemErro("Não foi possível alterar.");
@@ -57,7 +55,7 @@ class ServicoItem {
     return resultado;
   }
 
-  Item encontrePorId(int _id) {
+  Item encontrePorId(BigInt _id) {
     return BancoDadosMock.itens.where((item) => item.id == _id).first;
   }
 

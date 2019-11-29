@@ -53,7 +53,7 @@ class ServicoUsuario {
     return resultado;
   }
 
-  Usuario encontrePorId(int _id) {
+  Usuario encontrePorId(BigInt _id) {
     return BancoDadosMock.usuarios.where((user) => user.id == _id).first;
   }
 

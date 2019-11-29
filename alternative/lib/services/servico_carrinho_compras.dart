@@ -25,5 +25,4 @@ class CarrinhoCompras {
   static int quantidadeItens(){
     return carrinhoCompras.length;
   }
-
 }

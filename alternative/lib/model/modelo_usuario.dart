@@ -12,6 +12,7 @@ class Usuario {
   String dataCriacao;
   List<Pagamento> pagamentos;
   List<int> lojasFavoritas;
+  List<int> carrinho;
 
   Usuario({
     this.id,
@@ -20,6 +21,8 @@ class Usuario {
     this.senha,
     this.dataCriacao,
     this.pagamentos,
+    this.lojasFavoritas,
+    this.carrinho,
   });
 
   factory Usuario.fromJson(Map<String, dynamic> json) => Usuario(
@@ -29,6 +32,8 @@ class Usuario {
     senha: json["senha"],
     dataCriacao: json["dataCriacao"],
     pagamentos: List<Pagamento>.from(json["pagamentos"].map((x) => Pagamento.fromJson(x))),
+    lojasFavoritas: List<int>.from(json["lojasFavoritas"].map((x) => x)),
+    carrinho: List<int>.from(json["carrinho"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
@@ -38,33 +43,39 @@ class Usuario {
     "senha": senha,
     "dataCriacao": dataCriacao,
     "pagamentos": List<dynamic>.from(pagamentos.map((x) => x.toJson())),
+    "lojasFavoritas": List<int>.from(lojasFavoritas.map((x) => x)),
+    "carrinho": List<int>.from(carrinho.map((x) => x)),
   };
 }
 
 class Pagamento {
-  int mesAno;
-  bool pago;
+  BigInt id;
+  String dataPag;
   double valor;
-  int idItem;
+  BigInt idItem;
+  BigInt idUsuario;
 
   Pagamento({
-    this.mesAno,
-    this.pago,
+    this.id,
+    this.dataPag,
     this.valor,
-    this.idItem
+    this.idItem,
+    this.idUsuario,
   });
 
   factory Pagamento.fromJson(Map<String, dynamic> json) => Pagamento(
-    mesAno: json["mesAno"],
-    pago: json["pago"],
+    dataPag: json["dataPag"],
     valor: json["valor"].toDouble(),
     idItem: json["idItem"],
+    id: json["id"],
+    idUsuario: json["idUsuario"],
   );
 
   Map<String, dynamic> toJson() => {
-    "mesAno": mesAno,
-    "pago": pago,
+    "dataPag": dataPag,
     "valor": valor,
-    "idItem": idItem
+    "idItem": idItem,
+    "idUsuario": idUsuario,
+    "id": id
   };
 }
