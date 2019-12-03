@@ -1,5 +1,6 @@
 import 'package:alternative/infra/cores.dart';
 import 'package:alternative/model/modelo_item.dart';
+import 'package:alternative/pages/login.dart';
 import 'package:alternative/services/servico_carrinho_compras.dart';
 import 'package:alternative/singleton/singleton_usuario.dart';
 import 'package:flutter/cupertino.dart';
@@ -153,18 +154,16 @@ class CardItens extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Text(
-                  SingletonUsuario.instance.usuarioLogado.carrinho.contains(item.id) ? "Remover" : "Comprar",
+                  CarrinhoCompras.contem(item.id) ? "Remover" : "Comprar",
                   style: TextStyle(color: Colors.black54),
                 ),
                 GestureDetector(
                   onTap: () {
-                    if (SingletonUsuario.instance.usuarioLogado.carrinho.contains(item.id) == false) {
+                    if (CarrinhoCompras.contem(item.id) == false) {
                       CarrinhoCompras.adicionaAoCarrinho(item);
-                      SingletonUsuario.instance.usuarioLogado.carrinho.add(item.id);
                       Toast.show("Item adicionado ao carrinho!", context);
                     } else {
                       CarrinhoCompras.removaDoCarrinho(item.id);
-                      SingletonUsuario.instance.usuarioLogado.carrinho.remove(item.id);
                       Toast.show("Item removido do carrinho!", context);
                     }
                   },

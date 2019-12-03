@@ -1,65 +1,84 @@
-import 'package:alternative/infra/mock_db.dart';
-import 'package:alternative/infra/resultado_execucao.dart';
+import 'package:alternative/infra/http_client.dart';
+import 'package:alternative/infra/type_request.dart';
+import 'package:alternative/infra/url_store.dart';
 import 'package:alternative/model/modelo_item.dart';
 
 class ServicoItem {
 
-  ResultadoExecucao adicionaItem(int _id, int _idLoja, String _nome,
-      double _preco, String _produtoDesc, String _producaoDesc, List<Imagem> _imagem) {
+  static List<Item> itens = new List<Item>();
 
-    BancoDadosMock.itens.add(new Item(
-        id: _id,
+  adicionaItem(int _idLoja, String _nome,
+      double _preco, String _produtoDesc, String _producaoDesc) {
+
+    var item = new Item(
         idLoja: _idLoja,
         nome: _nome,
         preco: _preco,
         produtoDesc: _produtoDesc,
-        producaoDesc: _producaoDesc,
-        imagens: _imagem));
+        producaoDesc: _producaoDesc);
 
-    return new ResultadoExecucao(true, "");
+    final String url = UrlStore.urlItem;
+
+    MyHttpClient httpClient = new MyHttpClient(
+        url: url,
+        type: TypeRequest.POST,
+        body: item.toJson(),
+        onSucess: _onSucess,
+        onFail: _onFail);
+
+    httpClient.executar();
+    print(url);
+    print(httpClient.body);
   }
 
-  ResultadoExecucao removeItem(int _id) {
-    var resultado = new ResultadoExecucao(true, "");
-
-    if (BancoDadosMock.itens
-            .contains(BancoDadosMock.itens.where((item) => item.id == _id)) ==
-        false) {
-      resultado.adicioneMensagemErro("Item não encontrado!");
-      resultado.setResultado(false);
-    } else {
-      BancoDadosMock.itens.removeWhere((item) => item.id == _id);
-    }
-
-    return resultado;
+  _onSucess(var response, var headers) {
+    print(" -- SUCESSO! --");
+  }
+  _onFail(var response) {
+    print(" --- ERRO --- ");
+    print(response);
   }
 
-  ResultadoExecucao alteraItem(int _id, int _idLoja, String _nome,
-      double _preco, String _produtoDesc, String _producaoDesc, List<Imagem> _imagem) {
-    var resultado = new ResultadoExecucao(true, "");
+  removeItem(int _id) {
 
-    if(removeItem(_id).sucesso()){
-      BancoDadosMock.itens.add(new Item(
-          id: _id,
-          idLoja: _idLoja,
-          nome: _nome,
-          preco: _preco,
-          produtoDesc: _produtoDesc,
-          producaoDesc: _producaoDesc,
-          imagens: _imagem,));
-    } else {
-      resultado.setResultado(false);
-      resultado.adicioneMensagemErro("Não foi possível alterar.");
-    }
+    final String url = UrlStore.urlItem + "?id=eq." + _id.toString();
 
-    return resultado;
+    MyHttpClient httpClient = new MyHttpClient(
+        url: url,
+        type: TypeRequest.DELETE,
+        onSucess: _onSucess,
+        onFail: _onFail);
+
+    httpClient.executar();
+    print(url);
+    print(httpClient.body);
+  }
+
+  getItens() {
+    final String url = UrlStore.urlItem;
+
+    MyHttpClient httpClient = new MyHttpClient(
+        url: url,
+        type: TypeRequest.GET,
+        onSucess: _onSucessGetItens,
+        onFail: _onFail);
+
+    httpClient.executar();
+    print(url);
+    print(httpClient.body);
+  }
+
+  _onSucessGetItens(var response, var headers) {
+    ItemList item = new ItemList.fromJson(response);
+    itens = item.itemList;
+    print(" -- SUCESSO! --");
   }
 
   Item encontrePorId(BigInt _id) {
-    return BancoDadosMock.itens.where((item) => item.id == _id).first;
+    return itens.where((item) => item.id == _id).first;
   }
 
   List<Item> encontreTodos() {
-    return BancoDadosMock.itens;
+    return itens;
   }
 }

@@ -9,8 +9,6 @@ class Loja {
   String nome;
   String descricao;
   int idUsuario;
-  double caixa;
-  double valorTotalRecebido;
   int avaliacao;
   String foto;
 
@@ -19,8 +17,6 @@ class Loja {
     this.nome,
     this.descricao,
     this.idUsuario,
-    this.caixa,
-    this.valorTotalRecebido,
     this.avaliacao,
     this.foto
   });
@@ -29,21 +25,28 @@ class Loja {
     id: json["id"],
     nome: json["nome"],
     idUsuario: json["idUsuario"],
-    caixa: json["caixa"].toDouble(),
-    valorTotalRecebido: json["valorTotalRecebido"].toDouble(),
-    avaliacao: json["avaliacao"],
+    avaliacao: json["avaliavao"],
     descricao: json["descricao"],
     foto: json["foto"],
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
     "nome": nome,
     "idUsuario": idUsuario,
-    "caixa": caixa,
-    "valorTotalRecebido": valorTotalRecebido,
-    "avaliacao": avaliacao,
+    "avaliavao": avaliacao,
     "foto": foto,
     "descricao": descricao
   };
+}
+
+class LojaList {
+  final List<Loja> lojaList;
+  LojaList({
+    this.lojaList,
+  });
+  factory LojaList.fromJson(List<dynamic> json) {
+    return new LojaList(
+      lojaList: json.map((i) => Loja.fromJson(i)).toList(),
+    );
+  }
 }

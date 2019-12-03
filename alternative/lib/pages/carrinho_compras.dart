@@ -4,6 +4,7 @@ import 'package:alternative/infra/mock_db.dart';
 import 'package:alternative/model/modelo_item.dart';
 import 'package:alternative/pages/efetuar_compra.dart';
 import 'package:alternative/services/servico_carrinho_compras.dart';
+import 'package:alternative/services/servico_item.dart';
 import 'package:alternative/singleton/singleton_usuario.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -103,9 +104,9 @@ class _CarrinhoComprasPageState extends State<CarrinhoComprasPage> {
     List<Item> listaItens = new List<Item>();
     List<Item> listaAux = new List<Item>();
 
-    listaItens = BancoDadosMock.itens;
+    listaItens = ServicoItem.itens;
 
-    listaAux = listaItens.where((item) => SingletonUsuario.instance.usuarioLogado.carrinho.contains(item)).toList();
+//    listaAux = listaItens.where((item) => SingletonUsuario.instance.usuarioLogado.carrinho.contains(item)).toList();
 
     listaAux.forEach((item) => (list.add(CardItens(item))));
 

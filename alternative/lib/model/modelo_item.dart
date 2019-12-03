@@ -11,7 +11,6 @@ class Item {
   double preco;
   String produtoDesc;
   String producaoDesc;
-  List<Imagem> imagens;
 
   Item({
     this.id,
@@ -20,7 +19,6 @@ class Item {
     this.preco,
     this.produtoDesc,
     this.producaoDesc,
-    this.imagens,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
@@ -30,7 +28,6 @@ class Item {
     preco: json["preco"].toDouble(),
     produtoDesc: json["produtoDesc"],
     producaoDesc: json["producaoDesc"],
-    imagens: List<Imagem>.from(json["imagens"].map((x) => Imagem.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -40,34 +37,17 @@ class Item {
     "preco": preco,
     "produtoDesc": produtoDesc,
     "producaoDesc": producaoDesc,
-    "imagens": List<dynamic>.from(imagens.map((x) => x.toJson())),
   };
 }
 
-class Imagem {
-  int id;
-  int tipoImagem; // loja ou item
-  int idVinculo;
-  String valor;
-
-  Imagem({
-    this.id,
-    this.valor,
-    this.tipoImagem,
-    this.idVinculo,
+class ItemList {
+  final List<Item> itemList;
+  ItemList({
+    this.itemList,
   });
-
-  factory Imagem.fromJson(Map<String, dynamic> json) => Imagem(
-    id: json["id"],
-    valor: json["valor"],
-    idVinculo: json["idVinculo"],
-    tipoImagem: json["tipoImagem"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "valor": valor,
-    "idVinculo": idVinculo,
-    "tipoImagem": tipoImagem,
-  };
+  factory ItemList.fromJson(List<dynamic> json) {
+    return new ItemList(
+      itemList: json.map((i) => Item.fromJson(i)).toList(),
+    );
+  }
 }

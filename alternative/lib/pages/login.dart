@@ -1,9 +1,9 @@
 import 'package:alternative/infra/cores.dart';
 import 'package:alternative/components/geral.dart';
-import 'package:alternative/infra/mock_db.dart';
 import 'package:alternative/infra/resultado_execucao.dart';
-import 'package:alternative/infra/util.dart';
 import 'package:alternative/model/modelo_usuario.dart';
+import 'package:alternative/services/servico_item.dart';
+import 'package:alternative/services/servico_loja.dart';
 import 'package:alternative/services/servico_usuario.dart';
 import 'package:alternative/singleton/singleton_usuario.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,13 +20,17 @@ class LoginPage extends StatefulWidget {
 // Used for controlling whether the user is loggin or creating an account
 enum FormType { login, register }
 
-class _LoginPageState extends State<LoginPage> {
+ServicoUsuario servicoUsuario = new ServicoUsuario();
+ServicoLoja servicoLoja = new ServicoLoja();
+ServicoItem servicoItem = new ServicoItem();
 
-  ServicoUsuario servicoUsuario;
+class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    BancoDadosMock.iniciaMock();
+    servicoUsuario.getUsuarios();
+    servicoLoja.getLojas();
+    servicoItem.getItens();
     servicoUsuario = new ServicoUsuario();
     super.initState();
   }
@@ -232,7 +236,7 @@ class _LoginPageState extends State<LoginPage> {
   ResultadoExecucao validaEntradaUsuario(String _email, String _senha) {
     var resultado = new ResultadoExecucao(true, "");
 
-    List<Usuario> listaUsuarios = BancoDadosMock.usuarios;
+    List<Usuario> listaUsuarios = ServicoUsuario.usuarios;
     List<Usuario> listaAux = new List<Usuario>();
 
     listaAux = listaUsuarios.where((usuario) => usuario.email == _email).toList();
@@ -254,7 +258,7 @@ class _LoginPageState extends State<LoginPage> {
   ResultadoExecucao verificaLoginESenha(String _email, String _senha) {
     var resultado = new ResultadoExecucao(true, "");
 
-    List<Usuario> listaUsuarios = BancoDadosMock.usuarios;
+    List<Usuario> listaUsuarios = ServicoUsuario.usuarios;
     List<Usuario> listaAux = new List<Usuario>();
 
     listaAux = listaUsuarios
@@ -274,7 +278,7 @@ class _LoginPageState extends State<LoginPage> {
     if (resultado.sucesso()) {
 
       if(SingletonUsuario.instance.usuarioLogado == null){
-        SingletonUsuario.instance.usuarioLogado = BancoDadosMock.usuarios.where((user) => user.email == _email).toList().first;
+        SingletonUsuario.instance.usuarioLogado = ServicoUsuario.usuarios.where((user) => user.email == _email).toList().first;
       }
 
       Navigator.push(
@@ -287,12 +291,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _createAccountPressed() {
-    servicoUsuario.adicionaUsuario(BancoDadosMock.usuarios.last.id + 1, _nome, _email, _password, Util.retornaDataFormatada(DateTime.now()), new List<Pagamento>(), 0);
+    servicoUsuario.adicionaUsuario(_nome, _email, _password);
 
     _formChange();
 
     Toast.show("Usuário cadastrado com sucesso!", context,
-        duration: 3, gravity: Toast.CENTER);
+        duration: 2, gravity: Toast.CENTER);
   }
 
   void _passwordReset() {

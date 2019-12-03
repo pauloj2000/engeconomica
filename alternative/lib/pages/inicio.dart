@@ -10,6 +10,7 @@ import 'package:alternative/pages/nova_loja.dart';
 import 'package:alternative/pages/novo_anuncio.dart';
 import 'package:alternative/pages/pesquisa.dart';
 import 'package:alternative/services/servico_carrinho_compras.dart';
+import 'package:alternative/services/servico_loja.dart';
 import 'package:alternative/singleton/singleton_usuario.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +36,8 @@ class _InicioPageState extends State<InicioPage> {
         child: Icon(Icons.add, size: MediaQuery.of(context).size.width * 0.1,),
         onPressed: () {
           var lojaAux = new Loja();
-          lojaAux = BancoDadosMock.lojas.where((loja) => loja.idUsuario == SingletonUsuario.instance.usuarioLogado.id).length != 0 ?
-          BancoDadosMock.lojas.where((loja) => loja.idUsuario == SingletonUsuario.instance.usuarioLogado.id).first : null;
+          lojaAux = ServicoLoja.lojas.where((loja) => loja.idUsuario == SingletonUsuario.instance.usuarioLogado.id).length != 0 ?
+          ServicoLoja.lojas.where((loja) => loja.idUsuario == SingletonUsuario.instance.usuarioLogado.id).first : null;
 
           if(lojaAux != null){
             Navigator.push(

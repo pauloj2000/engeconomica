@@ -1,63 +1,65 @@
-import 'package:alternative/infra/mock_db.dart';
-import 'package:alternative/infra/resultado_execucao.dart';
+import 'package:alternative/infra/http_client.dart';
+import 'package:alternative/infra/type_request.dart';
+import 'package:alternative/infra/url_store.dart';
 import 'package:alternative/model/modelo_usuario.dart';
 
 class ServicoUsuario {
-  ResultadoExecucao adicionaUsuario(int _id, String _nome, String _email,
-      String _senha, String _dataCriacao, List<Pagamento> _pagamentos, int idLoja) {
 
-    BancoDadosMock.usuarios.add(new Usuario(
-        id: _id,
+  static List<Usuario> usuarios = new List<Usuario>();
+
+  void adicionaUsuario(String _nome, String _email,
+      String _senha) {
+
+    final String url = UrlStore.urlUsuario;
+
+    var usuario = new Usuario(
         nome: _nome,
         email: _email,
-        senha: _senha,
-        dataCriacao: _dataCriacao,
-        pagamentos: _pagamentos));
+        senha: _senha);
 
-    return new ResultadoExecucao(true, "");
+    MyHttpClient httpClient = new MyHttpClient(
+        url: url,
+        type: TypeRequest.POST,
+        body: usuario.toJson(),
+        onSucess: _onSucess,
+        onFail: _onFail);
+
+    httpClient.executar();
+    print(url);
+    print(httpClient.body);
   }
 
-  ResultadoExecucao removeUsuario(int _id) {
-    var resultado = new ResultadoExecucao(true, "");
-
-    if (BancoDadosMock.usuarios
-            .contains(BancoDadosMock.usuarios.where((usuario) => usuario.id == _id)) ==
-        false) {
-      resultado.adicioneMensagemErro("Usuário não encontrado!");
-      resultado.setResultado(false);
-    } else {
-      BancoDadosMock.usuarios.removeWhere((usuario) => usuario.id == _id);
-    }
-
-    return resultado;
+  _onSucess(var response, var headers) {
+    print(" -- SUCESSO! --");
+  }
+  _onFail(var response) {
+    print(" --- ERRO --- ");
+    print(response);
   }
 
-  ResultadoExecucao alteraUsuario(int _id, String _nome, String _email,
-      String _senha, String _dataCriacao, List<Pagamento> _pagamentos, int idLoja) {
+  getUsuarios() {
+    final String url = UrlStore.urlUsuario;
 
-    var resultado = new ResultadoExecucao(true, "");
+    MyHttpClient httpClient = new MyHttpClient(
+        url: url,
+        type: TypeRequest.GET,
+        onSucess: _onSucessGetUsuarios,
+        onFail: _onFail);
 
-    if(removeUsuario(_id).sucesso()){
-      BancoDadosMock.usuarios.add(new Usuario(
-          id: _id,
-          nome: _nome,
-          email: _email,
-          senha: _senha,
-          dataCriacao: _dataCriacao,
-          pagamentos: _pagamentos));
-    } else {
-      resultado.setResultado(false);
-      resultado.adicioneMensagemErro("Não foi possível alterar.");
-    }
-
-    return resultado;
+    httpClient.executar();
+    print(url);
+    print(httpClient.body);
   }
 
-  Usuario encontrePorId(BigInt _id) {
-    return BancoDadosMock.usuarios.where((user) => user.id == _id).first;
+  _onSucessGetUsuarios(var response, var headers) {
+    UsuarioList user = new UsuarioList.fromJson(response);
+    usuarios = user.usuarioList;
+    print(" -- SUCESSO! --");
   }
 
-  List<Usuario> encontreTodos() {
-    return BancoDadosMock.usuarios;
+
+  Usuario encontrePorId(int _id) {
+    return usuarios.where((user) => user.id == _id).first;
   }
+
 }

@@ -9,5 +9,4 @@ class SingletonUsuario {
   static SingletonUsuario get instance => _instance;
 
   Usuario usuarioLogado;
-
 }

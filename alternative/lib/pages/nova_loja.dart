@@ -29,18 +29,15 @@ class _NovaLojaPageState extends State<NovaLojaPage> {
   adicionaNovaLoja(){
     var servicoLoja = new ServicoLoja();
 
-    novaLoja.id = BancoDadosMock.lojas.last.id + 1;
     novaLoja.nome = _nomeLoja.text;
     novaLoja.idUsuario = SingletonUsuario.instance.usuarioLogado.id;
     novaLoja.avaliacao = 5;
-    novaLoja.caixa = 0;
-    novaLoja.valorTotalRecebido = 0;
     novaLoja.descricao = _descricaoLoja.text;
     novaLoja.foto = "";
 
     Toast.show("Loja cadastrada com sucesso!", context, gravity: Toast.CENTER);
 
-    servicoLoja.adicionaLoja(novaLoja.id, novaLoja.nome, novaLoja.caixa, novaLoja.valorTotalRecebido, novaLoja.avaliacao, novaLoja.idUsuario, novaLoja.descricao, novaLoja.foto);
+    servicoLoja.adicionaLoja(novaLoja.nome, novaLoja.avaliacao, novaLoja.idUsuario, novaLoja.descricao, novaLoja.foto);
   }
 
   List<Step> my_steps = [

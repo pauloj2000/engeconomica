@@ -1,8 +1,8 @@
 import 'package:alternative/bloc/bloc_pesquisa.dart';
 import 'package:alternative/components/card_itens.dart';
 import 'package:alternative/infra/cores.dart';
-import 'package:alternative/infra/mock_db.dart';
 import 'package:alternative/model/modelo_item.dart';
+import 'package:alternative/services/servico_item.dart';
 import 'package:alternative/services/servico_loja.dart';
 import 'package:alternative/singleton/singleton_usuario.dart';
 import 'package:flutter/cupertino.dart';
@@ -98,7 +98,7 @@ class _PesquisaPageState extends State<PesquisaPage> {
     List<Item> listaItens = new List<Item>();
     List<Item> listaFiltrada = new List<Item>();
 
-    listaItensAux = BancoDadosMock.itens;
+    listaItensAux = ServicoItem.itens;
 
     listaItens = listaItensAux.where((item) => item.nome.toLowerCase().contains(_blocPesquisa.getTextoPesquisa().toLowerCase())).toList();
 

@@ -8,6 +8,10 @@ class CarrinhoCompras {
     carrinhoCompras.add(item);
   }
 
+  static bool contem(int id){
+    return carrinhoCompras.where((item) => item.id == id).length > 0;
+  }
+
   static void removaDoCarrinho(int id){
     carrinhoCompras.removeWhere((item) => item.id == id);
   }

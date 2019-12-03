@@ -29,14 +29,12 @@ class _NovoAnuncioPageState extends State<NovoAnuncioPage> {
   adicionaNovoItem(){
     var servicoItem = new ServicoItem();
 
-    novoItem.id = BancoDadosMock.itens.last.id + 1;
     novoItem.nome = _nomeProduto.text;
     novoItem.preco = double.parse(_precoProduto.text);
     novoItem.produtoDesc = _descricaoProduto.text;
     novoItem.producaoDesc = _descricaProducao.text;
-    novoItem.imagens = null;
 
-    servicoItem.adicionaItem(novoItem.id, 1, novoItem.nome, novoItem.preco, novoItem.produtoDesc, novoItem.producaoDesc, novoItem.imagens);
+    servicoItem.adicionaItem(novoItem.idLoja, novoItem.nome, novoItem.preco, novoItem.produtoDesc, novoItem.producaoDesc);
 
     Toast.show("Item cadastrado com sucesso!", context, gravity: Toast.CENTER);
 

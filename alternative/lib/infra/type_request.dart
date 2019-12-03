@@ -1,0 +1,1 @@
+enum TypeRequest { GET, POST, DELETE, PUT }

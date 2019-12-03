@@ -1,70 +1,71 @@
-import 'package:alternative/infra/mock_db.dart';
+import 'package:alternative/infra/http_client.dart';
 import 'package:alternative/infra/resultado_execucao.dart';
+import 'package:alternative/infra/type_request.dart';
+import 'package:alternative/infra/url_store.dart';
 import 'package:alternative/model/modelo_loja.dart';
 
 class ServicoLoja {
 
-  ResultadoExecucao adicionaLoja(int _id, String _nome, double _caixa,
-      double _valorTotalRecebido, int _avaliacao, int _idUsuario, String _descricao, String _foto) {
-    BancoDadosMock.lojas.add(new Loja(
-      id: _id,
-      nome: _nome,
-      caixa: _caixa,
-      valorTotalRecebido: _valorTotalRecebido,
-      avaliacao: _avaliacao,
-      idUsuario:  _idUsuario,
-      descricao: _descricao,
-      foto: _foto,
-    ));
+  static List<Loja> lojas = new List<Loja>();
 
-    return new ResultadoExecucao(true, "");
-  }
+  ResultadoExecucao adicionaLoja(String _nome,
+      int _avaliacao, int _idUsuario, String _descricao, String _foto) {
 
-  ResultadoExecucao removeLoja(int _id) {
-    var resultado = new ResultadoExecucao(true, "");
-
-    if (BancoDadosMock.lojas
-            .contains(BancoDadosMock.lojas.where((loja) => loja.id == _id)) ==
-        false) {
-      resultado.adicioneMensagemErro("Loja não encontrada!");
-      resultado.setResultado(false);
-    } else {
-      BancoDadosMock.lojas.removeWhere((loja) => loja.id == _id);
-    }
-
-    return resultado;
-  }
-
-  ResultadoExecucao alteraLoja(int _id, String _nome, double _caixa,
-      double _valorTotalRecebido, int _avaliacao, int _idUsuario, String _descricao, String _foto) {
-    removeLoja(_id);
-
-    var resultado = new ResultadoExecucao(true, "");
-
-    if(removeLoja(_id).sucesso()){
-      BancoDadosMock.lojas.add(new Loja(
-        id: _id,
+    var loja = new Loja(
         nome: _nome,
-        caixa: _caixa,
-        valorTotalRecebido: _valorTotalRecebido,
         avaliacao: _avaliacao,
-        idUsuario: _idUsuario,
+        idUsuario:  _idUsuario,
         descricao: _descricao,
         foto: _foto,
-      ));
-    } else {
-      resultado.setResultado(false);
-      resultado.adicioneMensagemErro("Não foi possível alterar.");
-    }
+    );
 
-    return resultado;
+    final String url = UrlStore.urlLoja;
+
+    MyHttpClient httpClient = new MyHttpClient(
+        url: url,
+        type: TypeRequest.POST,
+        body: loja.toJson(),
+        onSucess: _onSucess,
+        onFail: _onFail);
+
+    httpClient.executar();
+    print(url);
+    print(httpClient.body);
+  }
+
+  _onSucess(var response, var headers) {
+    print(" -- SUCESSO! --");
+  }
+  _onFail(var response) {
+    print(" --- ERRO --- ");
+    print(response);
+  }
+
+  getLojas() {
+    final String url = UrlStore.urlLoja;
+
+    MyHttpClient httpClient = new MyHttpClient(
+        url: url,
+        type: TypeRequest.GET,
+        onSucess: _onSucessGetLojas,
+        onFail: _onFail);
+
+    httpClient.executar();
+    print(url);
+    print(httpClient.body);
+  }
+
+  _onSucessGetLojas(var response, var headers) {
+    LojaList loja = new LojaList.fromJson(response);
+    lojas = loja.lojaList;
+    print(" -- SUCESSO! --");
   }
 
   Loja encontrePorId(int _id) {
-    return BancoDadosMock.lojas.where((loja) => loja.id == _id).first;
+    return lojas.where((loja) => loja.id == _id).first;
   }
 
   List<Loja> encontreTodos() {
-    return BancoDadosMock.lojas;
+    return lojas;
   }
 }
