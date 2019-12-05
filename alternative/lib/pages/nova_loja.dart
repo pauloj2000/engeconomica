@@ -1,5 +1,4 @@
 import 'package:alternative/infra/cores.dart';
-import 'package:alternative/infra/mock_db.dart';
 import 'package:alternative/model/modelo_loja.dart';
 import 'package:alternative/services/servico_loja.dart';
 import 'package:alternative/singleton/singleton_usuario.dart';
@@ -35,9 +34,17 @@ class _NovaLojaPageState extends State<NovaLojaPage> {
     novaLoja.descricao = _descricaoLoja.text;
     novaLoja.foto = "";
 
+    servicoLoja.adicionaLoja(novaLoja.nome, novaLoja.avaliacao, novaLoja.idUsuario, novaLoja.descricao, novaLoja.foto);
+  }
+
+  onSucessNovaLoja(){
     Toast.show("Loja cadastrada com sucesso!", context, gravity: Toast.CENTER);
 
-    servicoLoja.adicionaLoja(novaLoja.nome, novaLoja.avaliacao, novaLoja.idUsuario, novaLoja.descricao, novaLoja.foto);
+    iniciaNovoItem();
+  }
+
+  onFailNovaLoja(){
+    Toast.show("Não foi possível cadastrar nova loja!", context, gravity: Toast.CENTER);
   }
 
   List<Step> my_steps = [
@@ -141,7 +148,6 @@ class _NovaLojaPageState extends State<NovaLojaPage> {
                       side: BorderSide(color: Cores.roxo)),
                   onPressed: () {
                     adicionaNovaLoja();
-                    iniciaNovoItem();
                   },
                   color: Cores.cinzaClaro,
                   child: new Row(

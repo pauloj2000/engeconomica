@@ -1,8 +1,6 @@
 import 'package:alternative/infra/cores.dart';
 import 'package:alternative/model/modelo_item.dart';
-import 'package:alternative/pages/login.dart';
 import 'package:alternative/services/servico_carrinho_compras.dart';
-import 'package:alternative/singleton/singleton_usuario.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
@@ -90,42 +88,6 @@ class CardItens extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.035,
-                  left: MediaQuery.of(context).size.width * 0.06,
-                ),
-                child: Text(
-                  "Descrição:  ",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.01,
-                  left: MediaQuery.of(context).size.width * 0.06,
-                  right: MediaQuery.of(context).size.width * 0.02,
-                ),
-                child: Text(
-                  item.producaoDesc != null && item.producaoDesc != ""
-                      ? item.producaoDesc
-                      : "-",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 12,
-                  ),
-                ),
               ),
             ),
             Container(

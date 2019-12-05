@@ -1,8 +1,10 @@
 import 'package:alternative/infra/cores.dart';
-import 'package:alternative/infra/mock_db.dart';
 import 'package:alternative/model/modelo_item.dart';
+import 'package:alternative/model/modelo_loja.dart';
 import 'package:alternative/pages/inicio.dart';
 import 'package:alternative/services/servico_item.dart';
+import 'package:alternative/services/servico_loja.dart';
+import 'package:alternative/singleton/singleton_usuario.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -26,19 +28,38 @@ class _NovoAnuncioPageState extends State<NovoAnuncioPage> {
   // init the step to 0th position
   int current_step = 0;
 
-  adicionaNovoItem(){
+  adicionaNovoItem() {
     var servicoItem = new ServicoItem();
 
     novoItem.nome = _nomeProduto.text;
     novoItem.preco = double.parse(_precoProduto.text);
-    novoItem.produtoDesc = _descricaoProduto.text;
-    novoItem.producaoDesc = _descricaProducao.text;
 
-    servicoItem.adicionaItem(novoItem.idLoja, novoItem.nome, novoItem.preco, novoItem.produtoDesc, novoItem.producaoDesc);
+    Future<Loja> lojaUsuario = new ServicoLoja()
+        .encontrePorId(SingletonUsuario.instance.usuarioLogado.id);
 
+    var idLoja;
+
+    lojaUsuario.then((value) {
+      idLoja = value.id;
+    });
+
+    Future<bool> adicionaItem = servicoItem.adicioneItem(novoItem.nome, novoItem.preco, idLoja);
+
+    adicionaItem.then((value){
+      if(value){
+        _sucessNovoItem();
+      } else {
+        _falhaNovoItem();
+      }
+    });
+  }
+
+  _sucessNovoItem() {
     Toast.show("Item cadastrado com sucesso!", context, gravity: Toast.CENTER);
+  }
 
-    servicoItem = null;
+  _falhaNovoItem() {
+    Toast.show("Não foi possível cadastrar novo item!", context, gravity: Toast.CENTER);
   }
 
   List<Step> my_steps = [
@@ -114,7 +135,10 @@ class _NovoAnuncioPageState extends State<NovoAnuncioPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.done, size: MediaQuery.of(context).size.width * 0.1,),
+        child: Icon(
+          Icons.done,
+          size: MediaQuery.of(context).size.width * 0.1,
+        ),
         onPressed: () {
           adicionaNovoItem();
           Navigator.push(

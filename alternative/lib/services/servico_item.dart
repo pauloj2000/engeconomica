@@ -1,84 +1,44 @@
-import 'package:alternative/infra/http_client.dart';
-import 'package:alternative/infra/type_request.dart';
 import 'package:alternative/infra/url_store.dart';
 import 'package:alternative/model/modelo_item.dart';
+import 'package:dio/dio.dart';
 
 class ServicoItem {
 
-  static List<Item> itens = new List<Item>();
+  var dio = new Dio();
 
-  adicionaItem(int _idLoja, String _nome,
-      double _preco, String _produtoDesc, String _producaoDesc) {
+  Future<bool> adicioneItem(String nome,
+      double preco, int idLoja) async {
 
-    var item = new Item(
-        idLoja: _idLoja,
-        nome: _nome,
-        preco: _preco,
-        produtoDesc: _produtoDesc,
-        producaoDesc: _producaoDesc);
+    var response = await dio.post(UrlStore.urlLoja, data: {"nome": nome, "preco": preco,
+      "idLoja": idLoja });
 
-    final String url = UrlStore.urlItem;
-
-    MyHttpClient httpClient = new MyHttpClient(
-        url: url,
-        type: TypeRequest.POST,
-        body: item.toJson(),
-        onSucess: _onSucess,
-        onFail: _onFail);
-
-    httpClient.executar();
-    print(url);
-    print(httpClient.body);
+    return response.statusCode == 201;
   }
 
-  _onSucess(var response, var headers) {
-    print(" -- SUCESSO! --");
-  }
-  _onFail(var response) {
-    print(" --- ERRO --- ");
-    print(response);
-  }
+  Future<bool> altereItem(int id,String nome,
+      double preco, int idLoja) async {
 
-  removeItem(int _id) {
+    var response = await dio.patch(UrlStore.urlLoja, data: {"id": id, "nome": nome, "preco": preco,
+      "idLoja": idLoja });
 
-    final String url = UrlStore.urlItem + "?id=eq." + _id.toString();
-
-    MyHttpClient httpClient = new MyHttpClient(
-        url: url,
-        type: TypeRequest.DELETE,
-        onSucess: _onSucess,
-        onFail: _onFail);
-
-    httpClient.executar();
-    print(url);
-    print(httpClient.body);
+    return response.statusCode == 201;
   }
 
-  getItens() {
-    final String url = UrlStore.urlItem;
+  Future<bool> excluiItem(int id) async {
+    var response = await dio.delete(UrlStore.urlLoja, queryParameters: {"id": id});
 
-    MyHttpClient httpClient = new MyHttpClient(
-        url: url,
-        type: TypeRequest.GET,
-        onSucess: _onSucessGetItens,
-        onFail: _onFail);
-
-    httpClient.executar();
-    print(url);
-    print(httpClient.body);
+    return response.statusCode == 201;
   }
 
-  _onSucessGetItens(var response, var headers) {
-    ItemList item = new ItemList.fromJson(response);
-    itens = item.itemList;
-    print(" -- SUCESSO! --");
+  Future<Item> encontrePorId(int id) async {
+    var response = await dio.get(UrlStore.urlLoja, queryParameters: {"id": id});
+
+    return Item.fromJson(response.data);
   }
 
-  Item encontrePorId(BigInt _id) {
-    return itens.where((item) => item.id == _id).first;
-  }
+  Future<List<Item>> getItens() async {
+    Response response = await Dio().get(UrlStore.urlLoja);
 
-  List<Item> encontreTodos() {
-    return itens;
+    return ItemList.fromJson(response.data).itemList;
   }
 }

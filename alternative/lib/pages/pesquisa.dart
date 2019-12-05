@@ -2,6 +2,7 @@ import 'package:alternative/bloc/bloc_pesquisa.dart';
 import 'package:alternative/components/card_itens.dart';
 import 'package:alternative/infra/cores.dart';
 import 'package:alternative/model/modelo_item.dart';
+import 'package:alternative/model/modelo_loja.dart';
 import 'package:alternative/services/servico_item.dart';
 import 'package:alternative/services/servico_loja.dart';
 import 'package:alternative/singleton/singleton_usuario.dart';
@@ -94,21 +95,26 @@ class _PesquisaPageState extends State<PesquisaPage> {
   Widget _getCards(String tituloCard) {
     List<Widget> list = new List<Widget>();
 
-    List<Item> listaItensAux = new List<Item>();
+    Future<List<Item>> listaItensAux;
     List<Item> listaItens = new List<Item>();
     List<Item> listaFiltrada = new List<Item>();
 
-    listaItensAux = ServicoItem.itens;
+    listaItensAux = new ServicoItem().getItens();
 
-    listaItens = listaItensAux.where((item) => item.nome.toLowerCase().contains(_blocPesquisa.getTextoPesquisa().toLowerCase())).toList();
+    listaItensAux.then((value){
+      listaItens = value.where((item) => item.nome.toLowerCase().contains(_blocPesquisa.getTextoPesquisa().toLowerCase())).toList();
+    });
 
     switch(_blocPesquisa.tipoPesquisa){
       case 0:
         listaFiltrada = listaItens;
         break;
       case 1:
-        var servicoLoja = new ServicoLoja();
-        listaFiltrada = listaItensAux.where((item) => servicoLoja.encontrePorId(item.idLoja).idUsuario == SingletonUsuario.instance.usuarioLogado.id).toList();
+        Future<Loja> loja = new ServicoLoja().encontrePorId(SingletonUsuario.instance.usuarioLogado.id);
+
+        loja.then((value){
+          listaFiltrada = listaItens.where((item) => item.lojaId == value.id);
+        });
         break;
       case 2:
         break;

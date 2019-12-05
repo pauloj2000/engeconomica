@@ -2,14 +2,11 @@ import 'package:alternative/infra/cores.dart';
 import 'package:alternative/components/geral.dart';
 import 'package:alternative/infra/resultado_execucao.dart';
 import 'package:alternative/model/modelo_usuario.dart';
-import 'package:alternative/services/servico_item.dart';
-import 'package:alternative/services/servico_loja.dart';
 import 'package:alternative/services/servico_usuario.dart';
 import 'package:alternative/singleton/singleton_usuario.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
-
 import 'inicio.dart';
 
 class LoginPage extends StatefulWidget {
@@ -21,17 +18,11 @@ class LoginPage extends StatefulWidget {
 enum FormType { login, register }
 
 ServicoUsuario servicoUsuario = new ServicoUsuario();
-ServicoLoja servicoLoja = new ServicoLoja();
-ServicoItem servicoItem = new ServicoItem();
 
 class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    servicoUsuario.getUsuarios();
-    servicoLoja.getLojas();
-    servicoItem.getItens();
-    servicoUsuario = new ServicoUsuario();
     super.initState();
   }
 
@@ -236,10 +227,15 @@ class _LoginPageState extends State<LoginPage> {
   ResultadoExecucao validaEntradaUsuario(String _email, String _senha) {
     var resultado = new ResultadoExecucao(true, "");
 
-    List<Usuario> listaUsuarios = ServicoUsuario.usuarios;
+    Future<List<Usuario>> listaUsuarios = servicoUsuario.getUsuarios();
     List<Usuario> listaAux = new List<Usuario>();
 
-    listaAux = listaUsuarios.where((usuario) => usuario.email == _email).toList();
+    List<Usuario> listaUsuariosFinal;
+
+    listaUsuarios.then((value) {
+      listaUsuariosFinal = value;
+      listaAux = value.where((usuario) => usuario.email == _email);
+    });
 
     if (listaAux.length == 0) {
       resultado.setResultado(false);
@@ -250,19 +246,17 @@ class _LoginPageState extends State<LoginPage> {
       SingletonUsuario.instance.usuarioLogado = listaAux.first;
     }
 
-    resultado = verificaLoginESenha(_email, _senha);
+    resultado = verificaLoginESenha(_email, _senha, listaUsuariosFinal);
 
     return resultado;
   }
 
-  ResultadoExecucao verificaLoginESenha(String _email, String _senha) {
+  ResultadoExecucao verificaLoginESenha(String _email, String _senha, List<Usuario> listaUsuarios) {
     var resultado = new ResultadoExecucao(true, "");
 
-    List<Usuario> listaUsuarios = ServicoUsuario.usuarios;
     List<Usuario> listaAux = new List<Usuario>();
 
-    listaAux = listaUsuarios
-        .where((usuario) => usuario.email == _email && usuario.senha == _senha).toList();
+    listaAux = listaUsuarios.where((usuario) => usuario.email == _email && usuario.senha == _senha).toList();
 
     if (listaAux.length == 0) {
       resultado.setResultado(false);
@@ -276,11 +270,6 @@ class _LoginPageState extends State<LoginPage> {
     var resultado = validaEmail(_email, _password);
 
     if (resultado.sucesso()) {
-
-      if(SingletonUsuario.instance.usuarioLogado == null){
-        SingletonUsuario.instance.usuarioLogado = ServicoUsuario.usuarios.where((user) => user.email == _email).toList().first;
-      }
-
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => InicioPage()),
@@ -291,15 +280,31 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _createAccountPressed() {
-    servicoUsuario.adicionaUsuario(_nome, _email, _password);
+    Future<bool> resultado = servicoUsuario.adicionaUsuario(_nome, _email, _password);
+
+    resultado.then((value) {
+      if(value){
+        _sucessoCriarUsuario();
+      } else {
+        _falhaCriarUsuario();
+      }
+    });
 
     _formChange();
+  }
 
+  void _sucessoCriarUsuario(){
     Toast.show("Usuário cadastrado com sucesso!", context,
         duration: 2, gravity: Toast.CENTER);
   }
 
+  void _falhaCriarUsuario(){
+    Toast.show("Não foi possível cadastrar o usuário! Tente novamente.", context,
+        duration: 2, gravity: Toast.CENTER);
+  }
+
   void _passwordReset() {
-    print("The user wants a password reset request sent to $_email");
+    Toast.show("The user wants a password reset request sent to $_email", context,
+        duration: 2, gravity: Toast.CENTER);
   }
 }

@@ -35,21 +35,21 @@ class _InicioPageState extends State<InicioPage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add, size: MediaQuery.of(context).size.width * 0.1,),
         onPressed: () {
-          var lojaAux = new Loja();
-          lojaAux = ServicoLoja.lojas.where((loja) => loja.idUsuario == SingletonUsuario.instance.usuarioLogado.id).length != 0 ?
-          ServicoLoja.lojas.where((loja) => loja.idUsuario == SingletonUsuario.instance.usuarioLogado.id).first : null;
+          Future<Loja> existeLoja = new ServicoLoja().encontrePorId(SingletonUsuario.instance.usuarioLogado.id);
 
-          if(lojaAux != null){
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => NovoAnuncioPage()),
-            );
-          } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => NovaLojaPage()),
-            );
-          }
+          existeLoja.then((value) {
+            if(value != null){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NovoAnuncioPage()),
+              );
+            } else {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NovaLojaPage()),
+              );
+            }
+          });
         },
         backgroundColor: Colors.purple.withOpacity(0.8),
         foregroundColor: Cores.cinzaClaro,

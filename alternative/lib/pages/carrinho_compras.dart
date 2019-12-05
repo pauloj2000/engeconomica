@@ -101,12 +101,9 @@ class _CarrinhoComprasPageState extends State<CarrinhoComprasPage> {
 
   Widget _getCards() {
     List<Widget> list = new List<Widget>();
-    List<Item> listaItens = new List<Item>();
     List<Item> listaAux = new List<Item>();
 
-    listaItens = ServicoItem.itens;
-
-//    listaAux = listaItens.where((item) => SingletonUsuario.instance.usuarioLogado.carrinho.contains(item)).toList();
+    listaAux = CarrinhoCompras.carrinhoCompras;
 
     listaAux.forEach((item) => (list.add(CardItens(item))));
 
