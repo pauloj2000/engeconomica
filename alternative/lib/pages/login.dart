@@ -20,7 +20,6 @@ enum FormType { login, register }
 ServicoUsuario servicoUsuario = new ServicoUsuario();
 
 class _LoginPageState extends State<LoginPage> {
-
   @override
   void initState() {
     super.initState();
@@ -59,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _nomeListen(){
+  void _nomeListen() {
     if (_nomeFilter.text.isEmpty) {
       _nome = "";
     } else {
@@ -126,12 +125,14 @@ class _LoginPageState extends State<LoginPage> {
               obscureText: true,
             ),
           ),
-          _form == FormType.register ? Container(
-            child: new TextField(
-              controller: _nomeFilter,
-              decoration: new InputDecoration(labelText: 'Nome'),
-            ),
-          ) : Container(),
+          _form == FormType.register
+              ? Container(
+                  child: new TextField(
+                    controller: _nomeFilter,
+                    decoration: new InputDecoration(labelText: 'Nome'),
+                  ),
+                )
+              : Container(),
         ],
       ),
     );
@@ -251,12 +252,15 @@ class _LoginPageState extends State<LoginPage> {
     return resultado;
   }
 
-  ResultadoExecucao verificaLoginESenha(String _email, String _senha, List<Usuario> listaUsuarios) {
+  ResultadoExecucao verificaLoginESenha(
+      String _email, String _senha, List<Usuario> listaUsuarios) {
     var resultado = new ResultadoExecucao(true, "");
 
     List<Usuario> listaAux = new List<Usuario>();
 
-    listaAux = listaUsuarios.where((usuario) => usuario.email == _email && usuario.senha == _senha).toList();
+    listaAux = listaUsuarios
+        .where((usuario) => usuario.email == _email && usuario.senha == _senha)
+        .toList();
 
     if (listaAux.length == 0) {
       resultado.setResultado(false);
@@ -275,36 +279,37 @@ class _LoginPageState extends State<LoginPage> {
         MaterialPageRoute(builder: (context) => InicioPage()),
       );
     } else {
-      Toast.show(resultado.retornaMensagemErro(), context, gravity: Toast.CENTER, duration: 3);
+      Toast.show(resultado.retornaMensagemErro(), context,
+          gravity: Toast.CENTER, duration: 3);
     }
   }
 
-  void _createAccountPressed() {
-    Future<bool> resultado = servicoUsuario.adicionaUsuario(_nome, _email, _password);
+  Future _createAccountPressed() async {
+    bool resultado = await servicoUsuario.adicionaUsuario(_nome, _email, _password);
 
-    resultado.then((value) {
-      if(value){
-        _sucessoCriarUsuario();
-      } else {
-        _falhaCriarUsuario();
-      }
-    });
+    if (resultado) {
+      _sucessoCriarUsuario();
+    } else {
+      _falhaCriarUsuario();
+    }
 
     _formChange();
   }
 
-  void _sucessoCriarUsuario(){
+  void _sucessoCriarUsuario() {
     Toast.show("Usuário cadastrado com sucesso!", context,
         duration: 2, gravity: Toast.CENTER);
   }
 
-  void _falhaCriarUsuario(){
-    Toast.show("Não foi possível cadastrar o usuário! Tente novamente.", context,
+  void _falhaCriarUsuario() {
+    Toast.show(
+        "Não foi possível cadastrar o usuário! Tente novamente.", context,
         duration: 2, gravity: Toast.CENTER);
   }
 
   void _passwordReset() {
-    Toast.show("The user wants a password reset request sent to $_email", context,
+    Toast.show(
+        "The user wants a password reset request sent to $_email", context,
         duration: 2, gravity: Toast.CENTER);
   }
 }
