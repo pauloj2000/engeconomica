@@ -17,6 +17,8 @@ class NovaLojaPage extends StatefulWidget {
 class _NovaLojaPageState extends State<NovaLojaPage> {
   bool _loading = false;
 
+  var servicoLoja = new ServicoLoja();
+
   static TextEditingController _nomeLoja = new TextEditingController();
   static TextEditingController _descricaoLoja = new TextEditingController();
 
@@ -25,20 +27,28 @@ class _NovaLojaPageState extends State<NovaLojaPage> {
   // init the step to 0th position
   int current_step = 0;
 
-  adicionaNovaLoja(){
-    var servicoLoja = new ServicoLoja();
-
+  adicionaNovaLoja() async {
     novaLoja.nome = _nomeLoja.text;
     novaLoja.idUsuario = SingletonUsuario.instance.usuarioLogado.id;
     novaLoja.avaliacao = 5;
     novaLoja.descricao = _descricaoLoja.text;
     novaLoja.foto = "";
 
-    servicoLoja.adicionaLoja(novaLoja.nome, novaLoja.avaliacao, novaLoja.idUsuario, novaLoja.descricao, novaLoja.foto);
+    bool resultado = await servicoLoja.adicionaLoja(novaLoja.nome, novaLoja.avaliacao, novaLoja.idUsuario, novaLoja.descricao, novaLoja.foto);
+
+    if(resultado){
+      onSucessNovaLoja();
+    } else {
+      onFailNovaLoja();
+    }
   }
 
-  onSucessNovaLoja(){
+  onSucessNovaLoja() async {
     Toast.show("Loja cadastrada com sucesso!", context, gravity: Toast.CENTER);
+
+    if(await servicoLoja.existeLojaParaUsuario()){
+    SingletonUsuario.instance.lojaUsuario = await servicoLoja.encontrePorUsuarioId();
+    }
 
     iniciaNovoItem();
   }

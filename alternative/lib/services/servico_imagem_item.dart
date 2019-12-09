@@ -21,7 +21,7 @@ class ServicoImagemItem {
 
   Future<ImagemItem> encontrePorItem(int itemId) async {
     var response = await dio
-        .get(UrlStore.urlImagemItem, queryParameters: {"itemId": itemId});
+        .get(UrlStore.urlImagemItem + "?itemId=eq.$itemId");
 
     return ImagemItem.fromJson(response.data);
   }

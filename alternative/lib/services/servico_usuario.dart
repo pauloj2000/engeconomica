@@ -33,7 +33,7 @@ class ServicoUsuario {
 
 
   Future<Usuario> encontrePorId(int id) async {
-    var response = await dio.get(UrlStore.urlUsuario, queryParameters: {"id": id});
+    var response = await dio.get(UrlStore.urlUsuario+ "?id=eq.$id");
 
     return Usuario.fromJson(response.data);
   }

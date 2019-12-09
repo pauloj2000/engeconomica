@@ -28,30 +28,20 @@ class _NovoAnuncioPageState extends State<NovoAnuncioPage> {
   // init the step to 0th position
   int current_step = 0;
 
-  adicionaNovoItem() {
+  adicionaNovoItem() async {
     var servicoItem = new ServicoItem();
 
     novoItem.nome = _nomeProduto.text;
     novoItem.preco = double.parse(_precoProduto.text);
 
-    Future<Loja> lojaUsuario = new ServicoLoja()
-        .encontrePorId(SingletonUsuario.instance.usuarioLogado.id);
+    bool adicionaItem = await servicoItem.adicioneItem(
+        novoItem.nome, novoItem.preco, SingletonUsuario.instance.lojaUsuario.id);
 
-    var idLoja;
-
-    lojaUsuario.then((value) {
-      idLoja = value.id;
-    });
-
-    Future<bool> adicionaItem = servicoItem.adicioneItem(novoItem.nome, novoItem.preco, idLoja);
-
-    adicionaItem.then((value){
-      if(value){
-        _sucessNovoItem();
-      } else {
-        _falhaNovoItem();
-      }
-    });
+    if (adicionaItem) {
+      _sucessNovoItem();
+    } else {
+      _falhaNovoItem();
+    }
   }
 
   _sucessNovoItem() {

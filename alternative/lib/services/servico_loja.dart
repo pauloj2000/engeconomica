@@ -1,5 +1,6 @@
 import 'package:alternative/infra/url_store.dart';
 import 'package:alternative/model/modelo_loja.dart';
+import 'package:alternative/singleton/singleton_usuario.dart';
 import 'package:dio/dio.dart';
 
 class ServicoLoja {
@@ -30,16 +31,32 @@ class ServicoLoja {
     return response.statusCode == 201;
   }
 
-  Future<Loja> encontrePorId(int id) async {
-    var response = await dio.get(UrlStore.urlLoja, queryParameters: {"id": id});
+  Future<Loja> encontrePorUsuarioId() async {
+    var id = SingletonUsuario.instance.usuarioLogado.id;
 
-    try {
-      return Loja.fromJson(response.data);
-    } on Exception catch (exception) {
-      return null;
-    }
+    var response = await dio.get(UrlStore.urlLoja + "?usuarioId=eq.$id");
+
+    return Loja.fromJson(response.data[0]);
   }
 
+  Future<bool> existeLojaParaUsuario() async {
+    var id = SingletonUsuario.instance.usuarioLogado.id;
+
+    var response = await dio.get(UrlStore.urlLoja + "?usuarioId=eq.$id");
+
+    if(response.statusCode == 200){
+      var gambiarra = response.data.toString();
+
+      if(gambiarra == "[]"){
+        return false;
+      }
+      var loja = Loja.fromJson(response.data[0]);
+
+      return loja != null;
+    } else {
+      return false;
+    }
+  }
 
   Future<List<Loja>> getLojas() async {
     Response response = await Dio().get(UrlStore.urlLoja);

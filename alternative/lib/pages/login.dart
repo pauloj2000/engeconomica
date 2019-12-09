@@ -2,6 +2,7 @@ import 'package:alternative/infra/cores.dart';
 import 'package:alternative/components/geral.dart';
 import 'package:alternative/infra/resultado_execucao.dart';
 import 'package:alternative/model/modelo_usuario.dart';
+import 'package:alternative/services/servico_loja.dart';
 import 'package:alternative/services/servico_usuario.dart';
 import 'package:alternative/singleton/singleton_usuario.dart';
 import 'package:flutter/cupertino.dart';
@@ -211,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
 
   // These functions can self contain any user auth logic required, they all have access to _email and _password
 
-  ResultadoExecucao validaEmail(String _email, String _senha) {
+  Future<ResultadoExecucao> validaEmail(String _email, String _senha) async {
     var resultado = new ResultadoExecucao(true, "");
 
     if (!_email.contains("@") || !_email.contains(".com")) {
@@ -220,23 +221,19 @@ class _LoginPageState extends State<LoginPage> {
       return resultado;
     }
 
-    resultado = validaEntradaUsuario(_email, _senha);
+    resultado = await validaEntradaUsuario(_email, _senha);
 
     return resultado;
   }
 
-  ResultadoExecucao validaEntradaUsuario(String _email, String _senha) {
+  Future<ResultadoExecucao> validaEntradaUsuario(String _email, String _senha) async {
     var resultado = new ResultadoExecucao(true, "");
 
-    Future<List<Usuario>> listaUsuarios = servicoUsuario.getUsuarios();
+    List<Usuario> listaUsuarios = await servicoUsuario.getUsuarios();
+
     List<Usuario> listaAux = new List<Usuario>();
 
-    List<Usuario> listaUsuariosFinal;
-
-    listaUsuarios.then((value) {
-      listaUsuariosFinal = value;
-      listaAux = value.where((usuario) => usuario.email == _email);
-    });
+    listaAux = listaUsuarios.where((usuario) => usuario.email == _email).toList();
 
     if (listaAux.length == 0) {
       resultado.setResultado(false);
@@ -245,9 +242,15 @@ class _LoginPageState extends State<LoginPage> {
       return resultado;
     } else {
       SingletonUsuario.instance.usuarioLogado = listaAux.first;
+
+      var servicoLoja = new ServicoLoja();
+
+      if(await servicoLoja.existeLojaParaUsuario()){
+        SingletonUsuario.instance.lojaUsuario = await servicoLoja.encontrePorUsuarioId();
+      }
     }
 
-    resultado = verificaLoginESenha(_email, _senha, listaUsuariosFinal);
+    resultado = verificaLoginESenha(_email, _senha, listaUsuarios);
 
     return resultado;
   }
@@ -270,8 +273,8 @@ class _LoginPageState extends State<LoginPage> {
     return resultado;
   }
 
-  void _loginPressed() {
-    var resultado = validaEmail(_email, _password);
+  Future _loginPressed() async {
+    var resultado = await validaEmail(_email, _password);
 
     if (resultado.sucesso()) {
       Navigator.push(

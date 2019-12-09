@@ -19,13 +19,13 @@ class ServicoLojasFavoritas {
   }
 
   Future<LojaFavorita> encontrePorIdLoja(int id) async {
-    var response = await dio.get(UrlStore.urlLojaFavorita, queryParameters: {"lojaId": id});
+    var response = await dio.get(UrlStore.urlLojaFavorita + "?lojaId=eq.$id");
 
     return LojaFavorita.fromJson(response.data);
   }
 
   Future<LojaFavorita> encontrePorIdUsuario(int id) async {
-    var response = await dio.get(UrlStore.urlLojaFavorita, queryParameters: {"usuarioId": id});
+    var response = await dio.get(UrlStore.urlLojaFavorita + "?usuarioId=eq.$id");
 
     return LojaFavorita.fromJson(response.data);
   }

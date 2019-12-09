@@ -2,9 +2,6 @@ import 'package:alternative/bloc/bloc_pesquisa.dart';
 import 'package:alternative/components/card_itens.dart';
 import 'package:alternative/infra/cores.dart';
 import 'package:alternative/model/modelo_item.dart';
-import 'package:alternative/model/modelo_loja.dart';
-import 'package:alternative/services/servico_item.dart';
-import 'package:alternative/services/servico_loja.dart';
 import 'package:alternative/singleton/singleton_usuario.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +16,8 @@ class PesquisaPage extends StatefulWidget {
   PesquisaPage(this._blocPesquisa);
 }
 
+List<Item> listaItensPesquisa;
+
 class _PesquisaPageState extends State<PesquisaPage> {
   final TextEditingController _controllerPesquisa = new TextEditingController();
   bool _loading = false;
@@ -26,7 +25,7 @@ class _PesquisaPageState extends State<PesquisaPage> {
   BlocPesquisa _blocPesquisa;
 
   @override
-  void initState() {
+   initState() {
     super.initState();
     reassemble();
   }
@@ -35,7 +34,6 @@ class _PesquisaPageState extends State<PesquisaPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: _buildBar(context),
       body: ModalProgressHUD(
@@ -92,29 +90,23 @@ class _PesquisaPageState extends State<PesquisaPage> {
     );
   }
 
-  Widget _getCards(String tituloCard) {
+  Widget _getCards(String tituloCard)  {
     List<Widget> list = new List<Widget>();
 
-    Future<List<Item>> listaItensAux;
-    List<Item> listaItens = new List<Item>();
+    List<Item> listaAux = new List<Item>();
+
     List<Item> listaFiltrada = new List<Item>();
 
-    listaItensAux = new ServicoItem().getItens();
+    listaAux = listaItensPesquisa.where((item) => item.nome.toLowerCase().contains(_blocPesquisa.getTextoPesquisa().toLowerCase())).toList();
 
-    listaItensAux.then((value){
-      listaItens = value.where((item) => item.nome.toLowerCase().contains(_blocPesquisa.getTextoPesquisa().toLowerCase())).toList();
-    });
-
-    switch(_blocPesquisa.tipoPesquisa){
+    switch (_blocPesquisa.tipoPesquisa) {
       case 0:
-        listaFiltrada = listaItens;
+        listaFiltrada = listaAux;
         break;
       case 1:
-        Future<Loja> loja = new ServicoLoja().encontrePorId(SingletonUsuario.instance.usuarioLogado.id);
+        listaFiltrada = listaAux.where(
+            (item) => item.lojaId == SingletonUsuario.instance.lojaUsuario.id);
 
-        loja.then((value){
-          listaFiltrada = listaItens.where((item) => item.lojaId == value.id);
-        });
         break;
       case 2:
         break;

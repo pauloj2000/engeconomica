@@ -1,8 +1,6 @@
 import 'package:alternative/bloc/bloc_pesquisa.dart';
 import 'package:alternative/infra/cores.dart';
 import 'package:alternative/components/geral.dart';
-import 'package:alternative/infra/mock_db.dart';
-import 'package:alternative/model/modelo_loja.dart';
 import 'package:alternative/pages/carrinho_compras.dart';
 import 'package:alternative/pages/favoritos.dart';
 import 'package:alternative/pages/historico.dart';
@@ -10,8 +8,8 @@ import 'package:alternative/pages/nova_loja.dart';
 import 'package:alternative/pages/novo_anuncio.dart';
 import 'package:alternative/pages/pesquisa.dart';
 import 'package:alternative/services/servico_carrinho_compras.dart';
+import 'package:alternative/services/servico_item.dart';
 import 'package:alternative/services/servico_loja.dart';
-import 'package:alternative/singleton/singleton_usuario.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -25,31 +23,40 @@ class _InicioPageState extends State<InicioPage> {
   final TextEditingController _controllerPesquisa = new TextEditingController();
   bool _loading = false;
 
+  var servicoLoja = new ServicoLoja();
+
   BlocPesquisa _blocPesquisa = new BlocPesquisa();
+
+  iniciaItens() async {
+      listaItensPesquisa = await ServicoItem().getItens();
+  }
 
   @override
   Widget build(BuildContext context) {
+    iniciaItens();
+
     _controllerPesquisa.text = "";
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add, size: MediaQuery.of(context).size.width * 0.1,),
-        onPressed: () {
-          Future<Loja> existeLoja = new ServicoLoja().encontrePorId(SingletonUsuario.instance.usuarioLogado.id);
+        child: Icon(
+          Icons.add,
+          size: MediaQuery.of(context).size.width * 0.1,
+        ),
+        onPressed: () async {
+          bool existeLoja = await servicoLoja.existeLojaParaUsuario();
 
-          existeLoja.then((value) {
-            if(value != null){
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => NovoAnuncioPage()),
-              );
-            } else {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => NovaLojaPage()),
-              );
-            }
-          });
+          if (existeLoja) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NovoAnuncioPage()),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NovaLojaPage()),
+            );
+          }
         },
         backgroundColor: Colors.purple.withOpacity(0.8),
         foregroundColor: Cores.cinzaClaro,
@@ -64,7 +71,9 @@ class _InicioPageState extends State<InicioPage> {
             _botaoFavoritos(),
             _botaoMeusAnuncios(),
             _botaoHistoricoCompras(),
-            CarrinhoCompras.quantidadeItens() > 0 ? _botaoCarrinhoCompras() : Container(),
+            CarrinhoCompras.quantidadeItens() > 0
+                ? _botaoCarrinhoCompras()
+                : Container(),
           ],
         ),
       ),
@@ -104,7 +113,8 @@ class _InicioPageState extends State<InicioPage> {
 
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PesquisaPage(_blocPesquisa)),
+                    MaterialPageRoute(
+                        builder: (context) => PesquisaPage(_blocPesquisa)),
                   );
                 },
                 child: Icon(
@@ -168,7 +178,8 @@ class _InicioPageState extends State<InicioPage> {
 
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => PesquisaPage(_blocPesquisa)),
+            MaterialPageRoute(
+                builder: (context) => PesquisaPage(_blocPesquisa)),
           );
         },
         color: Cores.cinzaClaro,
