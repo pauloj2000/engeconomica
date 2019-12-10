@@ -1,5 +1,7 @@
+import 'package:alternative/bloc/bloc_favoritos.dart';
 import 'package:alternative/components/card_favoritos.dart';
 import 'package:alternative/infra/cores.dart';
+import 'package:alternative/pages/inicio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -9,8 +11,17 @@ class FavoritosPage extends StatefulWidget {
   State<StatefulWidget> createState() => new _FavoritosPageState();
 }
 
+
 class _FavoritosPageState extends State<FavoritosPage> {
   bool _loading = false;
+
+  BlocFavoritos blocFavoritos = new BlocFavoritos();
+
+  @override
+  void initState() {
+    _getCards();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +31,7 @@ class _FavoritosPageState extends State<FavoritosPage> {
       body: ModalProgressHUD(
         inAsyncCall: _loading,
         child: ListView(
-          children: <Widget>[
-            _getCards(),
-          ],
+          children: blocFavoritos.listaFavoritos,
         ),
       ),
     );
@@ -42,13 +51,15 @@ class _FavoritosPageState extends State<FavoritosPage> {
     );
   }
 
-  Widget _getCards() {
+   _getCards() {
     List<Widget> list = new List<Widget>();
-    for (var i = 1; i < 4; i++) {
+
+    listaLojasFavoritas.forEach((loja) {
       list.add(new Padding(
           padding: EdgeInsets.only(top: 25),
-          child: CardFavoritos((i == 1 ? "Loja do José" : i == 2 ? "Loja do João" : "Loja do Felipe"))));
-    }
-    return new Column(children: list);
+          child: CardFavoritos((loja))));
+    });
+
+    blocFavoritos.setListaFavoritos(list);
   }
 }

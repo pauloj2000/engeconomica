@@ -1,6 +1,10 @@
+import 'package:alternative/bloc/bloc_pesquisa.dart';
 import 'package:alternative/infra/cores.dart';
 import 'package:alternative/model/modelo_item.dart';
+import 'package:alternative/pages/pesquisa.dart';
 import 'package:alternative/services/servico_carrinho_compras.dart';
+import 'package:alternative/services/servico_favoritos.dart';
+import 'package:alternative/services/servico_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
@@ -8,7 +12,9 @@ import 'package:toast/toast.dart';
 class CardItens extends StatelessWidget {
   Item item;
 
-  CardItens(this.item);
+  bool meusItens;
+
+  CardItens(this.item, this.meusItens);
 
   @override
   Widget build(BuildContext context) {
@@ -115,36 +121,74 @@ class CardItens extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Text(
-                  CarrinhoCompras.contem(item.id) ? "Remover" : "Comprar",
-                  style: TextStyle(color: Colors.black54),
+                Visibility(
+                  visible: meusItens == false,
+                  child: Text(
+                    CarrinhoCompras.contem(item.id) ? "Remover" : "Comprar",
+                    style: TextStyle(color: Colors.black54),
+                  ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    if (CarrinhoCompras.contem(item.id) == false) {
-                      CarrinhoCompras.adicionaAoCarrinho(item);
-                      Toast.show("Item adicionado ao carrinho!", context);
-                    } else {
-                      CarrinhoCompras.removaDoCarrinho(item.id);
-                      Toast.show("Item removido do carrinho!", context);
-                    }
-                  },
-                  child: Image.asset(
-                    "assets/images/carrinho_compra.png",
-                    height: MediaQuery.of(context).size.height * 0.06,
+                Visibility(
+                  visible: meusItens == false,
+                  child: GestureDetector(
+                    onTap: () {
+                      if (CarrinhoCompras.contem(item.id) == false) {
+                        CarrinhoCompras.adicionaAoCarrinho(item);
+                        Toast.show("Item adicionado ao carrinho!", context);
+                      } else {
+                        CarrinhoCompras.removaDoCarrinho(item.id);
+                        Toast.show("Item removido do carrinho!", context);
+                      }
+                    },
+                    child: Image.asset(
+                      "assets/images/carrinho_compra.png",
+                      height: MediaQuery.of(context).size.height * 0.06,
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: meusItens == true,
+                  child: Text(
+                    "Editar",
+                    style: TextStyle(color: Colors.black54),
+                  ),
+                ),
+                Visibility(
+                  visible: meusItens == true,
+                  child: IconButton(
+                    icon: Icon(Icons.edit,
+                      color: Colors.purple,
+                    ),
                   ),
                 ),
                 Text(
-                  "Favoritar",
+                  meusItens == false ? "Favoritar" : "Excluir",
                   style: TextStyle(color: Colors.black54),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    Toast.show("Loja adicionada aos favoritos!", context);
+                  onTap: () async {
+                    if(meusItens){
+                      await ServicoItem().excluiItem(item.id);
+
+                      Navigator.pop(context);
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PesquisaPage(BlocPesquisa(), 1)),
+                      );
+
+                      Toast.show("Item removido!", context);
+                    } else {
+                      await ServicoLojasFavoritas().adicioneItem(item.id);
+                      Toast.show("Loja adicionada aos favoritos!", context);
+                    }
                   },
                   child: IconButton(
                     icon: Icon(
-                      Icons.favorite,
+                      meusItens == false
+                          ? Icons.favorite
+                          : Icons.delete_forever,
                       color: Colors.purple,
                     ),
                   ),

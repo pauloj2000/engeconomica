@@ -6,7 +6,7 @@ String lojaFavoritaToJson(LojaFavorita data) => json.encode(data.toJson());
 
 class LojaFavorita {
   int lojaId;
-  String usuarioId;
+  int usuarioId;
 
   LojaFavorita({
     this.lojaId,

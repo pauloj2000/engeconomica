@@ -13,13 +13,16 @@ class PesquisaPage extends StatefulWidget {
 
   BlocPesquisa _blocPesquisa;
 
-  PesquisaPage(this._blocPesquisa);
+  int controlador = 0;
+
+  PesquisaPage(this._blocPesquisa, this.controlador);
 }
 
 List<Item> listaItensPesquisa;
 
 class _PesquisaPageState extends State<PesquisaPage> {
   final TextEditingController _controllerPesquisa = new TextEditingController();
+
   bool _loading = false;
 
   BlocPesquisa _blocPesquisa;
@@ -27,13 +30,13 @@ class _PesquisaPageState extends State<PesquisaPage> {
   @override
    initState() {
     super.initState();
-    reassemble();
   }
 
   _PesquisaPageState(this._blocPesquisa);
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: _buildBar(context),
       body: ModalProgressHUD(
@@ -41,7 +44,7 @@ class _PesquisaPageState extends State<PesquisaPage> {
         child: ListView(
           children: <Widget>[
             _botaoBuscar(),
-            _getCards(_controllerPesquisa.text),
+            _getCards(),
           ],
         ),
       ),
@@ -90,7 +93,7 @@ class _PesquisaPageState extends State<PesquisaPage> {
     );
   }
 
-  Widget _getCards(String tituloCard)  {
+  Widget _getCards()  {
     List<Widget> list = new List<Widget>();
 
     List<Item> listaAux = new List<Item>();
@@ -113,7 +116,7 @@ class _PesquisaPageState extends State<PesquisaPage> {
     }
 
     listaFiltrada.forEach((item) => (list.add(new Padding(
-        padding: EdgeInsets.only(bottom: 25), child: CardItens(item)))));
+        padding: EdgeInsets.only(bottom: 25), child: CardItens(item, widget.controlador == 1)))));
 
     return new Column(children: list);
   }

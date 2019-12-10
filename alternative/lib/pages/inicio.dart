@@ -1,6 +1,9 @@
 import 'package:alternative/bloc/bloc_pesquisa.dart';
 import 'package:alternative/infra/cores.dart';
 import 'package:alternative/components/geral.dart';
+import 'package:alternative/model/modelo_loja.dart';
+import 'package:alternative/model/modelo_loja_favorita.dart';
+import 'package:alternative/model/modelo_pagamento.dart';
 import 'package:alternative/pages/carrinho_compras.dart';
 import 'package:alternative/pages/favoritos.dart';
 import 'package:alternative/pages/historico.dart';
@@ -8,8 +11,10 @@ import 'package:alternative/pages/nova_loja.dart';
 import 'package:alternative/pages/novo_anuncio.dart';
 import 'package:alternative/pages/pesquisa.dart';
 import 'package:alternative/services/servico_carrinho_compras.dart';
+import 'package:alternative/services/servico_favoritos.dart';
 import 'package:alternative/services/servico_item.dart';
 import 'package:alternative/services/servico_loja.dart';
+import 'package:alternative/services/servico_pagamento.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -19,16 +24,35 @@ class InicioPage extends StatefulWidget {
   State<StatefulWidget> createState() => new _InicioPageState();
 }
 
+List<LojaFavorita> listaFavoritos = new List<LojaFavorita>();
+List<Loja> listaLojasFavoritas = new List<Loja>();
+List<Pagamento> listaPagamentos = new List<Pagamento>();
+
 class _InicioPageState extends State<InicioPage> {
   final TextEditingController _controllerPesquisa = new TextEditingController();
   bool _loading = false;
 
   var servicoLoja = new ServicoLoja();
 
+  Future sleep(int value) {
+    return new Future.delayed(Duration(seconds: value), () => "$value");
+  }
+
   BlocPesquisa _blocPesquisa = new BlocPesquisa();
 
   iniciaItens() async {
-      listaItensPesquisa = await ServicoItem().getItens();
+    listaFavoritos = await ServicoLojasFavoritas().getItens();
+    listaItensPesquisa = await ServicoItem().getItens();
+
+    listaFavoritos.forEach((favorito) async {
+      Loja loja = await ServicoLoja().encontreLojaPorId(favorito.lojaId.toString());
+
+      if(listaLojasFavoritas.length == 0){
+        listaLojasFavoritas.add(loja);
+      }
+    });
+
+    listaPagamentos = await ServicoPagamento().getPagamentos();
   }
 
   @override
@@ -114,7 +138,7 @@ class _InicioPageState extends State<InicioPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => PesquisaPage(_blocPesquisa)),
+                        builder: (context) => PesquisaPage(_blocPesquisa, 0)),
                   );
                 },
                 child: Icon(
@@ -179,7 +203,7 @@ class _InicioPageState extends State<InicioPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => PesquisaPage(_blocPesquisa)),
+                builder: (context) => PesquisaPage(_blocPesquisa, 1)),
           );
         },
         color: Cores.cinzaClaro,
@@ -224,7 +248,7 @@ class _InicioPageState extends State<InicioPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             new Text(
-              'Histórico de compras',
+              'Histórico de pagamentos',
               style: TextStyle(
                 color: Cores.roxo,
                 fontWeight: FontWeight.bold,

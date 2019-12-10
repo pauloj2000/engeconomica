@@ -1,5 +1,7 @@
 import 'package:alternative/components/card_historico.dart';
 import 'package:alternative/infra/cores.dart';
+import 'package:alternative/model/modelo_pagamento.dart';
+import 'package:alternative/pages/inicio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -22,7 +24,7 @@ class _HistoricoPageState extends State<HistoricoPage> {
         inAsyncCall: _loading,
         child: ListView(
           children: <Widget>[
-            _getCards(),
+            listaPagamentos != null && listaPagamentos.length > 0 ? _getCards() : Container(),
           ],
         ),
       ),
@@ -32,7 +34,7 @@ class _HistoricoPageState extends State<HistoricoPage> {
   Widget _buildBar(BuildContext context) {
     return new AppBar(
       title: new Text(
-        "Histórico de compras",
+        "Histórico de pagamentos",
         style: TextStyle(
           color: Colors.white,
         ),
@@ -45,11 +47,15 @@ class _HistoricoPageState extends State<HistoricoPage> {
 
   Widget _getCards() {
     List<Widget> list = new List<Widget>();
-    for (var i = 1; i < 4; i++) {
+
+    List<Pagamento> listaAux = listaPagamentos;
+
+    listaAux.forEach((pagamento){
       list.add(new Padding(
           padding: EdgeInsets.only(top: 25),
-          child: CardHistorico((i == 1 ? "Compra 1" : i == 2 ? "Compra 2" : "Compra 3"))));
-    }
+          child:CardHistorico((pagamento))));
+    });
+
     return new Column(children: list);
   }
 }

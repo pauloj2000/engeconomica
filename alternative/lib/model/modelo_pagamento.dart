@@ -1,30 +1,39 @@
 class Pagamento {
-  BigInt id;
+  int id;
   String dataPag;
   double valor;
-  BigInt idItem;
-  BigInt idUsuario;
+  int usuarioId;
 
   Pagamento({
     this.id,
     this.dataPag,
     this.valor,
-    this.idItem,
-    this.idUsuario,
+    this.usuarioId,
   });
 
   factory Pagamento.fromJson(Map<String, dynamic> json) => Pagamento(
     dataPag: json["dataPag"],
     valor: json["valor"].toDouble(),
-    idItem: json["idItem"],
     id: json["id"],
-    idUsuario: json["idUsuario"],
+    usuarioId: json["usuarioId"],
   );
 
   Map<String, dynamic> toJson() => {
+    "id": id,
     "dataPag": dataPag,
     "valor": valor,
-    "idItem": idItem,
-    "idUsuario": idUsuario,
+    "usuarioId": usuarioId,
   };
+}
+
+class PagamentoList {
+  final List<Pagamento> pagamentoList;
+  PagamentoList({
+    this.pagamentoList,
+  });
+  factory PagamentoList.fromJson(List<dynamic> json) {
+    return new PagamentoList(
+      pagamentoList: json.map((i) => Pagamento.fromJson(i)).toList(),
+    );
+  }
 }

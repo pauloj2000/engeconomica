@@ -39,6 +39,12 @@ class ServicoLoja {
     return Loja.fromJson(response.data[0]);
   }
 
+  Future<Loja> encontreLojaPorId(String id) async {
+    var response = await dio.get(UrlStore.urlLoja + "?id=eq.$id");
+
+    return Loja.fromJson(response.data[0]);
+  }
+
   Future<bool> existeLojaParaUsuario() async {
     var id = SingletonUsuario.instance.usuarioLogado.id;
 

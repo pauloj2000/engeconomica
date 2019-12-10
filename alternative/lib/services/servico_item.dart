@@ -25,7 +25,7 @@ class ServicoItem {
   }
 
   Future<bool> excluiItem(int id) async {
-    var response = await dio.delete(UrlStore.urlItem, queryParameters: {"id": id});
+    var response = await dio.delete(UrlStore.urlItem + "?id=eq.$id");
 
     return response.statusCode == 201;
   }

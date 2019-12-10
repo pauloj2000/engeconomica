@@ -1,12 +1,14 @@
 import 'package:alternative/infra/cores.dart';
+import 'package:alternative/model/modelo_loja.dart';
+import 'package:alternative/singleton/singleton_usuario.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class CardFavoritos extends StatelessWidget {
-  String _tituloCard;
+  Loja _loja;
 
-  CardFavoritos(this._tituloCard);
+  CardFavoritos(this._loja);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class CardFavoritos extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  _tituloCard != null ? _tituloCard : "-",
+                  _loja.nome != null ? _loja.nome : "-",
                   style: TextStyle(
                       color: Cores.roxo,
                       fontWeight: FontWeight.bold,
@@ -34,7 +36,7 @@ class CardFavoritos extends StatelessWidget {
                     right: MediaQuery.of(context).size.width * 0.02,
                   ),
                   child: Text(
-                    "#1214",
+                    "#0" + _loja.id.toString(),
                     style: TextStyle(
                       color: Colors.black54,
                       fontSize: 12,
@@ -106,7 +108,7 @@ class CardFavoritos extends StatelessWidget {
                 right: MediaQuery.of(context).size.width * 0.02,
               ),
               child: Text(
-                "José Felipe de Abreu Neves",
+                SingletonUsuario.instance.usuarioLogado.nome.toString(),
                 style: TextStyle(
                   color: Colors.black54,
                   fontSize: 12,

@@ -1,12 +1,13 @@
 import 'package:alternative/infra/cores.dart';
+import 'package:alternative/model/modelo_pagamento.dart';
+import 'package:alternative/pages/pesquisa.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:toast/toast.dart';
 
 class CardHistorico extends StatelessWidget {
-  String _tituloCard;
+  Pagamento _pagamento;
 
-  CardHistorico(this._tituloCard);
+  CardHistorico(this._pagamento);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class CardHistorico extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  _tituloCard != null ? _tituloCard : "-",
+                  _pagamento != null ? listaItensPesquisa.first.nome : "",
                   style: TextStyle(
                       color: Cores.roxo,
                       fontWeight: FontWeight.bold,
@@ -46,7 +47,7 @@ class CardHistorico extends StatelessWidget {
                     right: MediaQuery.of(context).size.width * 0.02,
                   ),
                   child: Text(
-                    " R\$ 33",
+                    " R\$ " + _pagamento.valor.toString(),
                     style: TextStyle(
                       color: Colors.purple,
                       fontSize: 12,

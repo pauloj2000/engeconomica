@@ -105,7 +105,7 @@ class _CarrinhoComprasPageState extends State<CarrinhoComprasPage> {
 
     listaAux = CarrinhoCompras.carrinhoCompras;
 
-    listaAux.forEach((item) => (list.add(CardItens(item))));
+    listaAux.forEach((item) => (list.add(CardItens(item, false))));
 
     return new Column(children: list);
   }
